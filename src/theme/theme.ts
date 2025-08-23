@@ -1,12 +1,31 @@
 import { createTheme } from "@mui/material/styles";
 
+/**
+ * Cores disponíveis para uso na aplicação.
+ */
+export const colors = {
+    background: "#003150",
+    blue: {
+        strong: "#446FBF",
+        light: "#B4D0EF",
+    },
+    green: {
+        strong: "#009A29",
+    },
+    white: { strong: "#E4E4E4" },
+    black: { strong: "#000000" },
+    red: { strong: "#f44336" },
+    orange: { strong: "#ff9800" },
+    grey: { strong: "#565656" },
+};
+
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#446FBF",
+            main: colors.blue.strong,
         },
         secondary: {
-            main: "#009A29",
+            main: colors.green.strong,
         },
         error: {
             main: "#f44336",
@@ -21,7 +40,7 @@ const theme = createTheme({
             main: "#4caf50",
         },
         background: {
-            default: "#003150",
+            default: colors.background,
             paper: "#ffffff",
         },
     },

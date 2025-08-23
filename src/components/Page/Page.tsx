@@ -11,8 +11,9 @@ const Page = ({ children }: { children: React.ReactNode }) => {
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: "background.default",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                minHeight: "100vh",
             }}
         >
             {children}
