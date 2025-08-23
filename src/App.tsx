@@ -1,5 +1,8 @@
+// Páginas
+import Login from "./pages/login/Login";
+
 function App() {
-    return <div>Teste 25</div>;
+    return <Login />;
 }
 
 export default App;
