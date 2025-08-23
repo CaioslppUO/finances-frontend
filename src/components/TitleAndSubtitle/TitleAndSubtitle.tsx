@@ -24,7 +24,6 @@ const TitleAndSubtitle = ({
     return (
         <Grid
             container
-            spacing={2}
             sx={{
                 textAlign: "center",
                 display: "block",
@@ -36,7 +35,15 @@ const TitleAndSubtitle = ({
                 <Typography variant="h3">{title}</Typography>
             </Grid>
             {/* Subtítulo */}
-            <Grid container size={12} mt={3}>
+            <Grid
+                container
+                size={12}
+                mt={3}
+                sx={{
+                    textAlign: "center",
+                    justifyContent: "center",
+                }}
+            >
                 <Grid>
                     <Icon fontSize="large" color={IconColor}></Icon>
                 </Grid>
