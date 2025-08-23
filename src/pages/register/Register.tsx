@@ -11,7 +11,7 @@ import TextInput from "../../components/TextInput/TextInput";
 import ConfirmButton from "../../components/Buttons/ConfirmButton";
 import TitleAndSubtitle from "../../components/TitleAndSubtitle/TitleAndSubtitle";
 
-const Login = () => {
+const Register = () => {
     return (
         <Page>
             {/* Container */}
@@ -36,28 +36,32 @@ const Login = () => {
                     {/* Título */}
                     <Grid size={12}>
                         <TitleAndSubtitle
-                            title="Login"
+                            title="Criar Conta"
                             subtitle="Gerenciador de Despesas"
                             Icon={BarChart}
                             IconColor="secondary"
                         />
                     </Grid>
                     {/* Usuário */}
-                    <Grid size={12} mt={6}>
+                    <Grid size={12} mt={4}>
                         <TextInput label="Usuário" />
                     </Grid>
+                    {/* E-mail */}
+                    <Grid size={12} mt={4}>
+                        <TextInput label="E-Mail" />
+                    </Grid>
                     {/* Senha */}
-                    <Grid size={12} mt={6}>
+                    <Grid size={12} mt={4}>
                         <TextInput label="Senha" isPassword />
                     </Grid>
                     {/* Botão de login */}
-                    <Grid size={12} mt={6}>
+                    <Grid size={12} mt={4}>
                         <ConfirmButton text="Entrar" />
                     </Grid>
                     {/* Criar Conta */}
                     <Grid size={12} mt={4} sx={{ textAlign: "center" }}>
                         <Typography display="inline">
-                            Não possui conta?{" "}
+                            Já possui conta?{" "}
                         </Typography>
                         <Typography
                             display="inline"
@@ -67,7 +71,7 @@ const Login = () => {
                                 cursor: "pointer",
                             }}
                         >
-                            registre-se!
+                            Faça login!
                         </Typography>
                     </Grid>
                 </Grid>
@@ -76,4 +80,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

@@ -14,7 +14,6 @@ const ConfirmButton = ({ text }: ConfirmButtonProps) => {
     return (
         <Grid
             container
-            mt={6}
             sx={{
                 textAlign: "center",
             }}
