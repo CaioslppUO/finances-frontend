@@ -18,8 +18,8 @@ const Login = () => {
             <Box
                 sx={{
                     display: "flex",
-                    width: "27%",
-                    height: "80vh",
+                    width: "25rem",
+                    height: "37rem",
                     borderRadius: 2,
                     backgroundColor: colors.white.strong,
                     boxShadow: 10,

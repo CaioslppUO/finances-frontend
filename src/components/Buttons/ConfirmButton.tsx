@@ -24,8 +24,8 @@ const ConfirmButton = ({ text }: ConfirmButtonProps) => {
                     sx={{
                         backgroundColor: colors.green.strong,
                         color: colors.white.strong,
-                        width: "30%",
-                        height: "7vh",
+                        width: "8rem",
+                        height: "3.5rem",
                         textTransform: "none",
                         fontSize: 18,
                     }}
