@@ -1,5 +1,5 @@
 // Material UI
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { BarChart } from "@mui/icons-material";
 
 // Cores
@@ -8,6 +8,7 @@ import { colors } from "../../theme/theme";
 // Componentes
 import Page from "../../components/Page/Page";
 import TextInput from "../../components/TextInput/TextInput";
+import ConfirmButton from "../../components/Buttons/ConfirmButton";
 import TitleAndSubtitle from "../../components/TitleAndSubtitle/TitleAndSubtitle";
 
 const Login = () => {
@@ -48,6 +49,10 @@ const Login = () => {
                     {/* Senha */}
                     <Grid size={12} mt={6}>
                         <TextInput label="Senha" isPassword />
+                    </Grid>
+                    {/* Botão de login */}
+                    <Grid size={12}>
+                        <ConfirmButton text="Entrar" />
                     </Grid>
                 </Grid>
             </Box>
