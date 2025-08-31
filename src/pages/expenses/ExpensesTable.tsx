@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import {
     MaterialReactTable,
     MRT_ShowHideColumnsButton,
-    MRT_ToggleDensePaddingButton,
     MRT_ToggleFullScreenButton,
     useMaterialReactTable,
     type MRT_ColumnDef,
@@ -17,9 +16,17 @@ import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
 
 // Utils
 import { colors } from "../../theme/theme";
+
+// Interfaces
 import type { TableData } from "./Interfaces";
 
-const ExpensesTable = ({ data }: { data: TableData[] }) => {
+const ExpensesTable = ({
+    data,
+    month,
+}: {
+    data: TableData[];
+    month: string;
+}) => {
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
             {
@@ -160,6 +167,14 @@ const ExpensesTable = ({ data }: { data: TableData[] }) => {
         initialState: {
             density: "compact",
         },
+        renderTopToolbarCustomActions: () => (
+            <Typography
+                variant="h6"
+                sx={{ color: colors.white.strong, flexGrow: 1 }}
+            >
+                Despesas Mensais - {month}
+            </Typography>
+        ),
         renderToolbarInternalActions: ({ table }) => (
             <>
                 {/* Botão customizado */}

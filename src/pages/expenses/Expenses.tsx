@@ -12,6 +12,7 @@ import ExpensesTable from "./ExpensesTable";
 
 // Interfaces
 import type { TableData } from "./Interfaces";
+import ExpensesGraph from "./ExpensesGraph";
 
 const Expenses = () => {
     const data: TableData[] = [
@@ -58,7 +59,7 @@ const Expenses = () => {
     ];
 
     return (
-        <DashboardLayout>
+        <DashboardLayout defaultSidebarCollapsed>
             <Grid
                 container
                 sx={{
@@ -71,7 +72,7 @@ const Expenses = () => {
                     container
                     size={12}
                     p={1}
-                    spacing={0.5}
+                    spacing={2}
                     sx={{
                         alignItems: "center",
                     }}
@@ -80,20 +81,20 @@ const Expenses = () => {
                         container
                         size={12}
                         sx={{
-                            height: "55%",
                             backgroundColor: colors.background,
                         }}
-                    ></Grid>
+                    >
+                        <ExpensesGraph />
+                    </Grid>
                     <Grid
                         size={12}
                         sx={{
-                            height: "45%",
                             backgroundColor: colors.white.strong,
                             display: "flex",
                             flexDirection: "column",
                         }}
                     >
-                        <ExpensesTable data={data} />
+                        <ExpensesTable data={data} month="Janeiro" />
                     </Grid>
                 </Grid>
             </Grid>

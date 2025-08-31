@@ -11,7 +11,13 @@ import theme from "./theme/theme";
 // import Login from "./pages/login/Login";
 // import Register from "./pages/register/Register";
 import Expenses from "./pages/expenses/Expenses";
+
+// Material UI
 import { AttachMoney } from "@mui/icons-material";
+
+// Date Picker
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
     const [session, setSession] = useState<Session | null>({
@@ -40,30 +46,32 @@ function App() {
     }, []);
 
     return (
-        <AppProvider
-            session={session}
-            authentication={authentication}
-            theme={theme}
-            branding={{
-                logo: (
-                    <img
-                        src="../public/logo.png"
-                        alt="Gerenciador de Despesas Logo"
-                    />
-                ),
-                title: "Gerenciador de Despesas",
-                homeUrl: "/",
-            }}
-            navigation={[
-                {
-                    segment: "despesas",
-                    title: "Despesas",
-                    icon: <AttachMoney />,
-                },
-            ]}
-        >
-            <Expenses />
-        </AppProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <AppProvider
+                session={session}
+                authentication={authentication}
+                theme={theme}
+                branding={{
+                    logo: (
+                        <img
+                            src="../public/logo.png"
+                            alt="Gerenciador de Despesas Logo"
+                        />
+                    ),
+                    title: "Gerenciador de Despesas",
+                    homeUrl: "/",
+                }}
+                navigation={[
+                    {
+                        segment: "despesas",
+                        title: "Despesas",
+                        icon: <AttachMoney />,
+                    },
+                ]}
+            >
+                <Expenses />
+            </AppProvider>
+        </LocalizationProvider>
     );
 }
 
