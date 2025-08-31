@@ -44,6 +44,7 @@ const theme = createTheme({
             paper: "#ffffff",
         },
     },
+    colorSchemes: { light: false, dark: true },
 });
 
 export default theme;

@@ -1,47 +1,49 @@
 // Material UI
 import { Grid } from "@mui/material";
 
-// Componentes
-import Page from "../../components/Page/Page";
+// Toolpad
+import { DashboardLayout } from "@toolpad/core";
+
+// Utils
+import { colors } from "../../theme/theme";
 
 const Expenses = () => {
     return (
-        <Page>
+        <DashboardLayout>
             <Grid
                 container
                 sx={{
-                    width: "100%",
-                    height: "100vh",
+                    flex: 1,
+                    border: 0,
+                    backgroundColor: colors.grey.strong,
                 }}
             >
-                {/* Sidebar */}
                 <Grid
                     container
-                    size={1.5}
-                    sx={{ backgroundColor: "blue" }}
-                ></Grid>
-                {/* Conteúdo */}
-                <Grid
-                    container
-                    size={10.5}
+                    size={12}
                     p={1}
                     spacing={0.5}
                     sx={{
                         alignItems: "center",
-                        backgroundColor: "green",
                     }}
                 >
                     <Grid
                         size={12}
-                        sx={{ height: "57vh", backgroundColor: "purple" }}
+                        sx={{
+                            height: "65%",
+                            backgroundColor: "#e7dfffff",
+                        }}
                     ></Grid>
                     <Grid
                         size={12}
-                        sx={{ height: "38vh", backgroundColor: "red" }}
+                        sx={{
+                            height: "35%",
+                            backgroundColor: colors.white.strong,
+                        }}
                     ></Grid>
                 </Grid>
             </Grid>
-        </Page>
+        </DashboardLayout>
     );
 };
 
