@@ -9,9 +9,10 @@ import { colors } from "../../theme/theme";
  * Componente que exibe um input de texto.
  * @param label Título do input.
  * @param isPassword Indica se o campo é uma senha ou não.
+ * @param noType Indica para não usar nenhum tipo específico.
  * @returns Componente que exibe um input de texto.
  */
-const TextInput = ({ label, isPassword }: TextInputProps) => {
+const TextInput = ({ label, isPassword, noType }: TextInputProps) => {
     return (
         <Grid
             container
@@ -24,12 +25,12 @@ const TextInput = ({ label, isPassword }: TextInputProps) => {
                 <TextField
                     label={label}
                     variant="outlined"
-                    type={isPassword ? "password" : "email"}
+                    type={isPassword ? "password" : noType ? "text" : "email"}
                     sx={{
-                        width: "90%",
+                        width: "100%",
                         "& .MuiOutlinedInput-root": {
                             backgroundColor: colors.blue.light,
-                            borderRadius: 15, // pode ser número (theme.spacing) ou px
+                            borderRadius: "0.8rem", // pode ser número (theme.spacing) ou px
                             "& fieldset": {
                                 borderWidth: "0.5px", // borda mais fina
                                 borderColor: "rgba(0,0,0,0.2)", // borda menos visível

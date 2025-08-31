@@ -1,3 +1,5 @@
+import type React from "react";
+
 export interface TableData {
     date: string;
     description: string;
@@ -14,4 +16,9 @@ export interface ExpensesTableProps {
 
 export interface ExpensesGraphProps {
     expenses: number[];
+}
+
+export interface ExpensesTypesProps {
+    showExpensesTypes: boolean;
+    setShowExpensesTypes: React.Dispatch<React.SetStateAction<boolean>>;
 }

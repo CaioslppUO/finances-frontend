@@ -1,5 +1,5 @@
 // React
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 // Table
 import {
@@ -26,6 +26,7 @@ import { colors } from "../../theme/theme";
 
 // Interfaces
 import type { ExpensesTableProps, TableData } from "./Interfaces";
+import ExpensesTypes from "./ExpensesTypes";
 
 /**
  * Função responsável por criar uma coluna simples para a tabela.
@@ -62,7 +63,8 @@ const getComplexColumn = (
     color: string,
     Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
         muiName: string;
-    }
+    },
+    onClick?: () => void
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorFn: (originalRow) => originalRow.type,
@@ -70,7 +72,12 @@ const getComplexColumn = (
         header: header,
         Header: (
             <i style={{ color: color }}>
-                <Grid container pt={0.2} sx={{ cursor: "pointer" }}>
+                <Grid
+                    container
+                    pt={0.2}
+                    sx={{ cursor: "pointer" }}
+                    onClick={onClick}
+                >
                     <Grid>
                         <Typography>{header}</Typography>
                     </Grid>
@@ -88,11 +95,19 @@ const getComplexColumn = (
  * @param month Mês sobre os quais são referentes os dados.
  */
 const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
+    const [showExpensesTypes, setShowExpensesTypes] = useState<boolean>(false);
+
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
             getSimpleColumn("date", "Data", colors.white.strong),
             getSimpleColumn("description", "Descrição", colors.white.strong),
-            getComplexColumn("type", "Tipo", colors.white.strong, Settings),
+            getComplexColumn(
+                "type",
+                "Tipo",
+                colors.white.strong,
+                Settings,
+                () => setShowExpensesTypes(!showExpensesTypes)
+            ),
             getComplexColumn(
                 "budger",
                 "Orçamento",
@@ -132,7 +147,7 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
                 },
             },
         ],
-        []
+        [showExpensesTypes]
     );
 
     const table = useMaterialReactTable({
@@ -200,6 +215,10 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
             }}
         >
             <MaterialReactTable table={table} />
+            <ExpensesTypes
+                showExpensesTypes={showExpensesTypes}
+                setShowExpensesTypes={setShowExpensesTypes}
+            />
         </Grid>
     );
 };
