@@ -6,3 +6,12 @@ export interface TableData {
     payment: string;
     value: number;
 }
+
+export interface ExpensesTableProps {
+    data: TableData[];
+    month: string;
+}
+
+export interface ExpensesGraphProps {
+    expenses: number[];
+}

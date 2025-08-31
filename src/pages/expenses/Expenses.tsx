@@ -9,12 +9,13 @@ import { colors } from "../../theme/theme";
 
 // Componentes
 import ExpensesTable from "./ExpensesTable";
+import ExpensesGraph from "./ExpensesGraph";
 
 // Interfaces
 import type { TableData } from "./Interfaces";
-import ExpensesGraph from "./ExpensesGraph";
 
 const Expenses = () => {
+    // Dados para a tabela de despesas mensais
     const data: TableData[] = [
         {
             date: "25/08/2025",
@@ -58,8 +59,15 @@ const Expenses = () => {
         },
     ];
 
+    // Dados para o gráfico de barras
+    const expenses = [
+        1200.25, 950.31, 1100.27, 1350.83, 980.01, 1500.15, 1250.22, 1400.33,
+        1000.513, 1600.12, 1300.54, 1450.13,
+    ];
+
     return (
         <DashboardLayout defaultSidebarCollapsed>
+            {/* Container dos Dados do Dashboard */}
             <Grid
                 container
                 sx={{
@@ -68,6 +76,7 @@ const Expenses = () => {
                     backgroundColor: colors.background,
                 }}
             >
+                {/* Container interno dos Dados */}
                 <Grid
                     container
                     size={12}
@@ -77,6 +86,7 @@ const Expenses = () => {
                         alignItems: "center",
                     }}
                 >
+                    {/* Container do gráfico de barras */}
                     <Grid
                         container
                         size={12}
@@ -84,8 +94,9 @@ const Expenses = () => {
                             backgroundColor: colors.background,
                         }}
                     >
-                        <ExpensesGraph />
+                        <ExpensesGraph expenses={expenses} />
                     </Grid>
+                    {/* Container da tabela de despesas mensais */}
                     <Grid
                         size={12}
                         sx={{

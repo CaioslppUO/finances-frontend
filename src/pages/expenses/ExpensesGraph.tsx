@@ -1,13 +1,19 @@
-// React
-import React from "react";
-
-// Gráficos
-import { BarChart, type BarChartProps } from "@mui/x-charts";
+// Material UI
 import { Grid, Typography } from "@mui/material";
-import { colors } from "../../theme/theme";
 import { DatePicker } from "@mui/x-date-pickers";
+import { BarChart, type BarChartProps } from "@mui/x-charts";
 
-const ExpensesGraph: React.FC = () => {
+// Utils
+import { colors } from "../../theme/theme";
+import { formatCurrency } from "../../utils/Utils";
+
+// Interfaces
+import type { ExpensesGraphProps } from "./Interfaces";
+
+/**
+ * Componente responsável por exibir o gráfico das despesas mensais.
+ */
+const ExpensesGraph = ({ expenses }: ExpensesGraphProps) => {
     const months: string[] = [
         "Jan",
         "Fev",
@@ -22,20 +28,6 @@ const ExpensesGraph: React.FC = () => {
         "Nov",
         "Dez",
     ];
-
-    const expenses: (number | null)[] = [
-        1200, 950, 1100, 1350, 980, 1500, 1250, 1400, 1000, 1600, 1300, 1450,
-    ];
-
-    const formatCurrency = (value: number | null) =>
-        value !== null
-            ? new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-              }).format(value)
-            : "";
 
     const chartProps: BarChartProps = {
         xAxis: [
@@ -82,7 +74,6 @@ const ExpensesGraph: React.FC = () => {
                     <Typography variant="h5">Despesas</Typography>
                 </Grid>
                 <Grid>
-                    {/* <Typography variant="h5">Data</Typography> */}
                     <DatePicker views={["month", "year"]} />
                 </Grid>
             </Grid>
@@ -90,7 +81,7 @@ const ExpensesGraph: React.FC = () => {
                 <BarChart
                     {...chartProps}
                     grid={{ horizontal: true }}
-                    sx={{ backgroundColor: "#1d1c1c" }} // Fundo cinza claro com cantos arredondados
+                    sx={{ backgroundColor: "#1d1c1c" }}
                 />
             </Grid>
         </Grid>

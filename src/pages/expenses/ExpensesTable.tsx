@@ -12,100 +12,97 @@ import {
 
 // Material UI
 import { Add, Settings } from "@mui/icons-material";
-import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import {
+    Grid,
+    IconButton,
+    Tooltip,
+    Typography,
+    type SvgIconTypeMap,
+} from "@mui/material";
 
 // Utils
 import { colors } from "../../theme/theme";
 
 // Interfaces
-import type { TableData } from "./Interfaces";
+import type { ExpensesTableProps, TableData } from "./Interfaces";
 
-const ExpensesTable = ({
-    data,
-    month,
-}: {
-    data: TableData[];
-    month: string;
-}) => {
+/**
+ * Função responsável por criar uma coluna simples para a tabela.
+ * @param key ID único para a coluna.
+ * @param header Nome que será utilizado para exibir a coluna.
+ * @param color Cor de exibição do nome da coluna.
+ * @returns Coluna para a tabela.
+ */
+const getSimpleColumn = (
+    key: string,
+    header: string,
+    color: string
+): MRT_ColumnDef<TableData> => {
+    return {
+        accessorKey: key,
+        header: header,
+        muiTableHeadCellProps: {
+            style: { color: color },
+        },
+    };
+};
+
+/**
+ * Função responsável por criar uma coluna complexa para a tabela.
+ * @param id ID único para a coluna.
+ * @param header Nome que será utilizado para exibir a coluna.
+ * @param color Cor de exibição do nome da coluna.
+ * @param Icon Ícone para exibir ao lado do header.
+ * @returns Coluna para a tabela.
+ */
+const getComplexColumn = (
+    id: string,
+    header: string,
+    color: string,
+    Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+        muiName: string;
+    }
+): MRT_ColumnDef<TableData> => {
+    return {
+        accessorFn: (originalRow) => originalRow.type,
+        id: id,
+        header: header,
+        Header: (
+            <i style={{ color: color }}>
+                <Grid container pt={0.2} sx={{ cursor: "pointer" }}>
+                    <Grid>
+                        <Typography>{header}</Typography>
+                    </Grid>
+                    <Grid ml={0.3}>{Icon && <Icon />}</Grid>
+                </Grid>
+            </i>
+        ),
+        Cell: ({ cell }) => <i>{cell.getValue<number>().toLocaleString()}</i>,
+    };
+};
+
+/**
+ * Componente responsável por exibir a tabela de despesas mensais.
+ * @param data Dados para exibir na tabela.
+ * @param month Mês sobre os quais são referentes os dados.
+ */
+const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
+            getSimpleColumn("date", "Data", colors.white.strong),
+            getSimpleColumn("description", "Descrição", colors.white.strong),
+            getComplexColumn("type", "Tipo", colors.white.strong, Settings),
+            getComplexColumn(
+                "budger",
+                "Orçamento",
+                colors.white.strong,
+                Settings
+            ),
+            getComplexColumn("payment", "PGTO", colors.white.strong, Settings),
             {
-                accessorKey: "date", //simple recommended way to define a column
-                header: "Data",
-                muiTableHeadCellProps: {
-                    style: { color: colors.white.strong },
-                }, //custom props
-            },
-            {
-                accessorKey: "description", //simple recommended way to define a column
-                header: "Descrição",
-                muiTableHeadCellProps: {
-                    style: { color: colors.white.strong },
-                }, //custom props
-            },
-            {
-                accessorFn: (originalRow) => originalRow.type, // alternate way
-                id: "type", //id required if you use accessorFn instead of accessorKey
-                header: "Tipo",
-                Header: (
-                    <i style={{ color: colors.white.strong }}>
-                        <Grid container pt={0.2} sx={{ cursor: "pointer" }}>
-                            <Grid>
-                                <Typography>Tipo</Typography>
-                            </Grid>
-                            <Grid ml={0.3}>
-                                <Settings />
-                            </Grid>
-                        </Grid>
-                    </i>
-                ), //optional custom markup
-                Cell: ({ cell }) => (
-                    <i>{cell.getValue<number>().toLocaleString()}</i>
-                ), //optional custom cell render
-            },
-            {
-                accessorFn: (originalRow) => originalRow.budget, // alternate way
-                id: "budget", //id required if you use accessorFn instead of accessorKey
-                header: "Orçamento",
-                Header: (
-                    <i style={{ color: colors.white.strong }}>
-                        <Grid container pt={0.2} sx={{ cursor: "pointer" }}>
-                            <Grid>
-                                <Typography>Orçamento</Typography>
-                            </Grid>
-                            <Grid ml={0.3}>
-                                <Settings />
-                            </Grid>
-                        </Grid>
-                    </i>
-                ), //optional custom markup
-                Cell: ({ cell }) => (
-                    <i>{cell.getValue<number>().toLocaleString()}</i>
-                ), //optional custom cell render
-            },
-            {
-                accessorFn: (originalRow) => originalRow.payment, // alternate way
-                id: "payment", //id required if you use accessorFn instead of accessorKey
-                header: "PGTO",
-                Header: (
-                    <i style={{ color: colors.white.strong }}>
-                        <Grid container pt={0.2} sx={{ cursor: "pointer" }}>
-                            <Grid>
-                                <Typography>PGTO</Typography>
-                            </Grid>
-                            <Grid ml={0.3}>
-                                <Settings />
-                            </Grid>
-                        </Grid>
-                    </i>
-                ), //optional custom markup
-                Cell: ({ cell }) => (
-                    <i>{cell.getValue<number>().toLocaleString()}</i>
-                ), //optional custom cell render
-            },
-            {
-                accessorFn: (originalRow) => originalRow.value, // alternate way
-                id: "value", //id required if you use accessorFn instead of accessorKey
+                accessorFn: (originalRow) => originalRow.value,
+                id: "value",
                 header: "Valor",
                 Header: (
                     <i style={{ color: colors.white.strong }}>
@@ -115,10 +112,10 @@ const ExpensesTable = ({
                             </Grid>
                         </Grid>
                     </i>
-                ), //optional custom markup
+                ),
                 Cell: ({ cell }) => (
                     <i>R$ {cell.getValue<number>().toLocaleString()}</i>
-                ), //optional custom cell render
+                ),
                 Footer: ({ table }) => {
                     const total = table
                         .getFilteredRowModel()
@@ -126,7 +123,7 @@ const ExpensesTable = ({
                     return (
                         <Typography
                             fontWeight="bold"
-                            fontSize="0.9rem" // aumenta o tamanho da fonte
+                            fontSize="0.9rem"
                             color={colors.white.strong}
                         >
                             Total: R$ {total.toLocaleString()}
@@ -140,10 +137,10 @@ const ExpensesTable = ({
 
     const table = useMaterialReactTable({
         columns,
-        data, // must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-        enableRowSelection: false, //enable some features
-        enableColumnOrdering: false, //enable a feature for all columns
-        enableGlobalFilter: false, // turn off a feature
+        data,
+        enableRowSelection: false,
+        enableColumnOrdering: false,
+        enableGlobalFilter: false,
         enableCellActions: false,
         enableColumnActions: false,
         enableColumnFilters: false,
@@ -187,7 +184,6 @@ const ExpensesTable = ({
                         <Add />
                     </IconButton>
                 </Tooltip>
-
                 {/* Botões padrão */}
                 <MRT_ShowHideColumnsButton table={table} />
                 <MRT_ToggleFullScreenButton table={table} />
@@ -202,7 +198,6 @@ const ExpensesTable = ({
                 flexGrow: 1,
                 height: "100%",
             }}
-            // sx={{ height: "100%", backgroundColor: "green" }}
         >
             <MaterialReactTable table={table} />
         </Grid>
