@@ -18,7 +18,8 @@ export interface ExpensesGraphProps {
     expenses: number[];
 }
 
-export interface ExpensesTypesProps {
-    showExpensesTypes: boolean;
-    setShowExpensesTypes: React.Dispatch<React.SetStateAction<boolean>>;
+export interface TypesProps {
+    showTypes: boolean;
+    setShowTypes: React.Dispatch<React.SetStateAction<boolean>>;
+    title: string;
 }

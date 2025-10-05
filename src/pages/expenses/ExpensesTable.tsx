@@ -26,7 +26,11 @@ import { colors } from "../../theme/theme";
 
 // Interfaces
 import type { ExpensesTableProps, TableData } from "./Interfaces";
+
+// Componentes
+import BudgetTypes from "./BudgetTypes";
 import ExpensesTypes from "./ExpensesTypes";
+import PaymentTypes from "./PaymentTypes";
 
 /**
  * Função responsável por criar uma coluna simples para a tabela.
@@ -96,6 +100,8 @@ const getComplexColumn = (
  */
 const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
     const [showExpensesTypes, setShowExpensesTypes] = useState<boolean>(false);
+    const [showBudgetTypes, setShowBudgetTypes] = useState<boolean>(false);
+    const [showPaymentTypes, setShowPaymentTypes] = useState<boolean>(false);
 
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
@@ -112,9 +118,16 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
                 "budger",
                 "Orçamento",
                 colors.white.strong,
-                Settings
+                Settings,
+                () => setShowBudgetTypes(!showBudgetTypes)
             ),
-            getComplexColumn("payment", "PGTO", colors.white.strong, Settings),
+            getComplexColumn(
+                "payment",
+                "PGTO",
+                colors.white.strong,
+                Settings,
+                () => setShowPaymentTypes(!showPaymentTypes)
+            ),
             {
                 accessorFn: (originalRow) => originalRow.value,
                 id: "value",
@@ -147,7 +160,7 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
                 },
             },
         ],
-        [showExpensesTypes]
+        [showExpensesTypes, showBudgetTypes, showPaymentTypes]
     );
 
     const table = useMaterialReactTable({
@@ -215,9 +228,21 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
             }}
         >
             <MaterialReactTable table={table} />
+            {/* Modais de Gerenciamento de Tipos */}
             <ExpensesTypes
-                showExpensesTypes={showExpensesTypes}
-                setShowExpensesTypes={setShowExpensesTypes}
+                showTypes={showExpensesTypes}
+                setShowTypes={setShowExpensesTypes}
+                title="Tipos de Despesas"
+            />
+            <BudgetTypes
+                showTypes={showBudgetTypes}
+                setShowTypes={setShowBudgetTypes}
+                title="Tipos de Orçamento"
+            />
+            <PaymentTypes
+                showTypes={showPaymentTypes}
+                setShowTypes={setShowPaymentTypes}
+                title="Tipos de Pagamento"
             />
         </Grid>
     );

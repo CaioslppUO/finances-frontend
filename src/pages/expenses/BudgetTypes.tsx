@@ -4,7 +4,7 @@ import ListManagementModal from "../../components/ListManagementModal/ListManage
 // Interfaces
 import type { TypesProps } from "./Interfaces";
 
-const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
+const BudgetTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
     return (
         <ListManagementModal
             showModal={showTypes}
@@ -14,4 +14,4 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
     );
 };
 
-export default ExpensesTypes;
+export default BudgetTypes;
