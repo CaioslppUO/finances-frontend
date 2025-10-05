@@ -30,8 +30,8 @@ import type { ExpensesTableProps, TableData } from "./Interfaces";
 
 // Componentes
 import BudgetTypes from "./BudgetTypes";
-import ExpensesTypes from "./ExpensesTypes";
 import PaymentTypes from "./PaymentTypes";
+import ExpensesTypes from "./ExpensesTypes";
 
 /**
  * Função responsável por criar uma coluna simples para a tabela.

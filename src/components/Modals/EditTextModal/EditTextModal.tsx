@@ -8,7 +8,7 @@ import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
 import type { EditTextModalProps } from "./interfaces";
 
 // Temas
-import { colors } from "../../theme/theme";
+import { colors } from "../../../theme/theme";
 
 /**
  * Exibe um modal simples para editar um valor textual.
@@ -18,8 +18,9 @@ import { colors } from "../../theme/theme";
  */
 const EditTextModal = ({
     showModal,
-    setShowModal,
     onConfirm,
+    onCancel,
+    elementID,
 }: EditTextModalProps) => {
     const [newValue, setNewValue] = useState<string>("");
 
@@ -34,23 +35,18 @@ const EditTextModal = ({
      * Função executada ao cancelar a edição.
      */
     const onCancelClick = (): void => {
-        setShowModal(false);
+        onCancel();
     };
 
     /**
      * Função executada ao confirmar o novo valor.
      */
     const onConfirmClick = (): void => {
-        onConfirm(newValue);
-        setShowModal(false);
+        onConfirm(elementID, newValue);
     };
 
     return (
-        <Modal
-            open={showModal}
-            onClose={() => setShowModal(false)}
-            disableEnforceFocus
-        >
+        <Modal open={showModal} onClose={() => onCancel()} disableEnforceFocus>
             <Grid
                 container
                 sx={{

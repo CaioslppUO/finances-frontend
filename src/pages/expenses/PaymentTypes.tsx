@@ -1,5 +1,5 @@
 // Componentes
-import ListManagementModal from "../../components/ListManagementModal/ListManagementModal";
+import ListManagementModal from "../../components/Modals/ListManagementModal/ListManagementModal";
 
 // Interfaces
 import type { TypesProps } from "./Interfaces";

@@ -17,14 +17,15 @@ import {
 } from "@mui/material";
 
 // Utils
-import { colors } from "../../theme/theme";
+import { colors } from "../../../theme/theme";
 
 // Interfaces
 import type { ListManagementModalProps } from "./Interfaces";
 
 // Componentes
-import TextInput from "../TextInput/TextInput";
+import TextInput from "../../TextInput/TextInput";
 import EditTextModal from "../EditTextModal/EditTextModal";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 
 /**
  * Exibe um modal com uma lista de itens e a possibilidade de adicionar ou remover itens.
@@ -38,7 +39,8 @@ const ListManagementModal = ({
     setShowModal,
     title,
 }: ListManagementModalProps) => {
-    const [showEdit, setShowEdit] = useState<boolean>(false);
+    const [idToEdit, setIdToEdit] = useState<number | undefined>(undefined);
+    const [idToDelete, setIdToDelete] = useState<number | undefined>(undefined);
 
     /**
      * Função executada ao clicar no botão de cancelar.
@@ -49,9 +51,54 @@ const ListManagementModal = ({
 
     /**
      * Função executada ao clicar no botão editar.
+     * @param id ID do elemento a ser editado.
      */
-    const onEditClick = (): void => {
-        setShowEdit(true);
+    const onEditClick = (id: number): void => {
+        setIdToEdit(id);
+    };
+
+    /**
+     * Função executada ao clicar no botão deletar.
+     * @param id ID do elemento a ser deletado.
+     */
+    const onDeleteClick = (id: number): void => {
+        setIdToDelete(id);
+    };
+
+    /**
+     * Função executada ao confirmar a deleção de um elemento.
+     * @param id ID do elemento a ser deletado.
+     */
+    const onConfirmDelete = (id: number | undefined): void => {
+        setIdToDelete(undefined);
+        if (id == undefined) return;
+        console.log("Deletado elemento de ID: ", id);
+    };
+
+    /**
+     * Função executada ao confirmar a edição.
+     * @param id ID do elemento a ser editado.
+     * @param newValue Novo valor do elemento a ser editado.
+     */
+    const onConfirmEdit = (id: number, newValue: string): void => {
+        console.log(
+            `Valor alterado de 'Line item ${id}' para '${newValue}' com sucesso!`
+        );
+        setIdToEdit(undefined);
+    };
+
+    /**
+     * Função chamada ao cancelar a edição.
+     */
+    const onCancelEdit = (): void => {
+        setIdToEdit(undefined);
+    };
+
+    /**
+     * Função chamada ao cancelar a deleção.
+     */
+    const onCancelDelete = (): void => {
+        setIdToDelete(undefined);
     };
 
     return (
@@ -121,12 +168,20 @@ const ListManagementModal = ({
                                 secondaryAction={
                                     <Grid container>
                                         <Grid>
-                                            <IconButton onClick={onEditClick}>
+                                            <IconButton
+                                                onClick={() =>
+                                                    onEditClick(value)
+                                                }
+                                            >
                                                 <EditIcon />
                                             </IconButton>
                                         </Grid>
                                         <Grid>
-                                            <IconButton>
+                                            <IconButton
+                                                onClick={() =>
+                                                    onDeleteClick(value)
+                                                }
+                                            >
                                                 <Delete />
                                             </IconButton>
                                         </Grid>
@@ -164,11 +219,18 @@ const ListManagementModal = ({
                 </Grid>
                 {/* Modal de edição de textos */}
                 <EditTextModal
-                    showModal={showEdit}
-                    setShowModal={setShowEdit}
-                    onConfirm={(newValue) => {
-                        console.log("Valor editado com sucesso: ", newValue);
-                    }}
+                    showModal={idToEdit != undefined}
+                    onConfirm={onConfirmEdit}
+                    onCancel={onCancelEdit}
+                    elementID={idToEdit == undefined ? -1 : idToEdit}
+                />
+                {/* Modal de confirmação de exclusão */}
+                <ConfirmationModal
+                    showModal={idToDelete != undefined}
+                    onConfirm={onConfirmDelete}
+                    onCancel={onCancelDelete}
+                    title="Cofirmar exclusão?"
+                    elementID={idToDelete}
                 />
             </Grid>
         </Modal>
