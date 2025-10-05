@@ -3,4 +3,5 @@ export interface EditTextModalProps {
     onConfirm: (id: number, newValue: string) => void;
     onCancel: () => void;
     elementID: number;
+    oldValue: string;
 }

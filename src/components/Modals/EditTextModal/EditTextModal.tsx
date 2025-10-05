@@ -21,8 +21,9 @@ const EditTextModal = ({
     onConfirm,
     onCancel,
     elementID,
+    oldValue,
 }: EditTextModalProps) => {
-    const [newValue, setNewValue] = useState<string>("");
+    const [newValue, setNewValue] = useState<string>(oldValue);
 
     /**
      * Reseta os estados do modal sempre que ele abre novamente.
@@ -79,7 +80,7 @@ const EditTextModal = ({
                     <TextField
                         value={newValue}
                         onChange={(e) => setNewValue(e.target.value)}
-                        label=""
+                        placeholder={oldValue}
                     />
                 </Grid>
                 {/* Botões de ação */}

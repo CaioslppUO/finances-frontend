@@ -223,6 +223,7 @@ const ListManagementModal = ({
                     onConfirm={onConfirmEdit}
                     onCancel={onCancelEdit}
                     elementID={idToEdit == undefined ? -1 : idToEdit}
+                    oldValue={`List item ${idToEdit}`}
                 />
                 {/* Modal de confirmação de exclusão */}
                 <ConfirmationModal
