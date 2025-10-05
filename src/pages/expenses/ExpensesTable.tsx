@@ -13,7 +13,7 @@ import {
 // Material UI
 import { Add, Delete, Settings } from "@mui/icons-material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
-import BuildIcon from "@mui/icons-material/Build";
+import EditIcon from "@mui/icons-material/Edit";
 import {
     Grid,
     IconButton,
@@ -123,7 +123,7 @@ const getActionsColumn = (
             <Grid container spacing={1}>
                 <Grid>
                     <IconButton size="small">
-                        <BuildIcon />
+                        <EditIcon />
                     </IconButton>
                 </Grid>
                 <Grid>

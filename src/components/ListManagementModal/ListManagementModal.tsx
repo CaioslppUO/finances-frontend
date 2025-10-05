@@ -1,5 +1,9 @@
+// React
+import { useState } from "react";
+
 // Material UI
 import { Add, Delete } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
 import {
     Button,
     Grid,
@@ -20,6 +24,7 @@ import type { ListManagementModalProps } from "./Interfaces";
 
 // Componentes
 import TextInput from "../TextInput/TextInput";
+import EditTextModal from "../EditTextModal/EditTextModal";
 
 /**
  * Exibe um modal com uma lista de itens e a possibilidade de adicionar ou remover itens.
@@ -33,11 +38,20 @@ const ListManagementModal = ({
     setShowModal,
     title,
 }: ListManagementModalProps) => {
+    const [showEdit, setShowEdit] = useState<boolean>(false);
+
     /**
      * Função executada ao clicar no botão de cancelar.
      */
     const onCancelClick = (): void => {
         setShowModal(false);
+    };
+
+    /**
+     * Função executada ao clicar no botão editar.
+     */
+    const onEditClick = (): void => {
+        setShowEdit(true);
     };
 
     return (
@@ -105,9 +119,18 @@ const ListManagementModal = ({
                                 key={value}
                                 disableGutters
                                 secondaryAction={
-                                    <IconButton>
-                                        <Delete />
-                                    </IconButton>
+                                    <Grid container>
+                                        <Grid>
+                                            <IconButton onClick={onEditClick}>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </Grid>
+                                    </Grid>
                                 }
                             >
                                 <ListItemText primary={`Line item ${value}`} />
@@ -139,6 +162,14 @@ const ListManagementModal = ({
                         </Button>
                     </Grid>
                 </Grid>
+                {/* Modal de edição de textos */}
+                <EditTextModal
+                    showModal={showEdit}
+                    setShowModal={setShowEdit}
+                    onConfirm={(newValue) => {
+                        console.log("Valor editado com sucesso: ", newValue);
+                    }}
+                />
             </Grid>
         </Modal>
     );
