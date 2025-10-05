@@ -8,9 +8,9 @@ import { BarChart, type BarChartProps } from "@mui/x-charts";
 import type { PickerValue } from "@mui/x-date-pickers/internals";
 
 // Utils
+import dayjs from "dayjs";
 import { colors } from "../../theme/theme";
 import { formatCurrency } from "../../utils/Utils";
-import dayjs from "dayjs";
 
 // Interfaces
 import { months, type ExpensesGraphProps } from "./Interfaces";
@@ -57,7 +57,7 @@ const ExpensesGraph = ({ expenses, setSelectedMonth }: ExpensesGraphProps) => {
                 valueFormatter: formatCurrency,
             },
         ],
-        height: 400,
+        height: 350,
     };
 
     return (

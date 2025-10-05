@@ -17,6 +17,9 @@ import ExpensesGraph from "./ExpensesGraph";
 // Interfaces
 import { months, type TableData } from "./Interfaces";
 
+/**
+ * Exibe a página de despesas.
+ */
 const Expenses = () => {
     // Mês selecionado no seletor de datas.
     const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -65,6 +68,46 @@ const Expenses = () => {
             payment: "Cartão Inter",
             value: 25.31,
         },
+        {
+            date: "27/08/2025",
+            description: "Reposição de Remédios",
+            type: "Conta",
+            budget: "Custo Fixo",
+            payment: "Cartão Inter",
+            value: 25.31,
+        },
+        {
+            date: "27/08/2025",
+            description: "Reposição de Remédios",
+            type: "Conta",
+            budget: "Custo Fixo",
+            payment: "Cartão Inter",
+            value: 25.31,
+        },
+        {
+            date: "27/08/2025",
+            description: "Reposição de Remédios",
+            type: "Conta",
+            budget: "Custo Fixo",
+            payment: "Cartão Inter",
+            value: 25.31,
+        },
+        {
+            date: "27/08/2025",
+            description: "Reposição de Remédios",
+            type: "Conta",
+            budget: "Custo Fixo",
+            payment: "Cartão Inter",
+            value: 25.31,
+        },
+        {
+            date: "27/08/2025",
+            description: "Reposição de Remédios",
+            type: "Conta",
+            budget: "Custo Fixo",
+            payment: "Cartão Inter",
+            value: 25.31,
+        },
     ];
 
     // Dados para o gráfico de barras
@@ -89,7 +132,7 @@ const Expenses = () => {
                     container
                     size={12}
                     p={1}
-                    spacing={2}
+                    spacing={1.5}
                     sx={{
                         alignItems: "center",
                     }}

@@ -11,8 +11,9 @@ import {
 } from "material-react-table";
 
 // Material UI
-import { Add, Settings } from "@mui/icons-material";
+import { Add, Delete, Settings } from "@mui/icons-material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import BuildIcon from "@mui/icons-material/Build";
 import {
     Grid,
     IconButton,
@@ -94,6 +95,48 @@ const getComplexColumn = (
 };
 
 /**
+ * Coluna com botões de ação.
+ * @param id ID único para a coluna.
+ * @param header Nome que será utilizado para exibir a coluna.
+ * @param color Cor de exibição do nome da coluna.
+ * @returns
+ */
+const getActionsColumn = (
+    id: string,
+    header: string,
+    color: string
+): MRT_ColumnDef<TableData> => {
+    return {
+        accessorFn: (originalRow) => originalRow.type,
+        id: id,
+        header: header,
+        Header: (
+            <i style={{ color: color }}>
+                <Grid container pt={0.2}>
+                    <Grid ml={1.5}>
+                        <Typography>Ações</Typography>
+                    </Grid>
+                </Grid>
+            </i>
+        ),
+        Cell: () => (
+            <Grid container spacing={1}>
+                <Grid>
+                    <IconButton size="small">
+                        <BuildIcon />
+                    </IconButton>
+                </Grid>
+                <Grid>
+                    <IconButton size="small">
+                        <Delete />
+                    </IconButton>
+                </Grid>
+            </Grid>
+        ),
+    };
+};
+
+/**
  * Componente responsável por exibir a tabela de despesas mensais.
  * @param data Dados para exibir na tabela.
  * @param month Mês sobre os quais são referentes os dados.
@@ -159,6 +202,7 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
                     );
                 },
             },
+            getActionsColumn("actions", "Ações", colors.white.strong),
         ],
         [showExpensesTypes, showBudgetTypes, showPaymentTypes]
     );
@@ -179,11 +223,15 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
         enableDensityToggle: false,
         enableTableFooter: true,
         muiTableContainerProps: {
-            sx: { height: "100%" },
+            sx: {
+                height: "100%",
+                minHeight: 330,
+                maxHeight: 330,
+                overflowY: "auto",
+            },
         },
         muiTablePaperProps: {
             sx: {
-                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 0,
