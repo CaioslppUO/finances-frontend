@@ -16,6 +16,7 @@ export interface ExpensesTableProps {
 
 export interface ExpensesGraphProps {
     expenses: number[];
+    setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface TypesProps {
@@ -23,3 +24,60 @@ export interface TypesProps {
     setShowTypes: React.Dispatch<React.SetStateAction<boolean>>;
     title: string;
 }
+
+export interface Month {
+    abbreviation: string;
+    complete: string;
+}
+
+// Meses do ano
+export const months: Month[] = [
+    {
+        abbreviation: "Jan",
+        complete: "Janeiro",
+    },
+    {
+        abbreviation: "Fev",
+        complete: "Fevereiro",
+    },
+    {
+        abbreviation: "Mar",
+        complete: "Março",
+    },
+    {
+        abbreviation: "Abr",
+        complete: "Abril",
+    },
+    {
+        abbreviation: "Mai",
+        complete: "Maio",
+    },
+    {
+        abbreviation: "Jun",
+        complete: "Junho",
+    },
+    {
+        abbreviation: "Jul",
+        complete: "Julho",
+    },
+    {
+        abbreviation: "Ago",
+        complete: "Agosto",
+    },
+    {
+        abbreviation: "Set",
+        complete: "Setembro",
+    },
+    {
+        abbreviation: "Out",
+        complete: "Outubro",
+    },
+    {
+        abbreviation: "Nov",
+        complete: "Novembro",
+    },
+    {
+        abbreviation: "Dez",
+        complete: "Dezembro",
+    },
+];

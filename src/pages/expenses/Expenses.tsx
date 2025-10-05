@@ -1,3 +1,6 @@
+// React
+import { useState } from "react";
+
 // Material UI
 import { Grid } from "@mui/material";
 
@@ -12,9 +15,14 @@ import ExpensesTable from "./ExpensesTable";
 import ExpensesGraph from "./ExpensesGraph";
 
 // Interfaces
-import type { TableData } from "./Interfaces";
+import { months, type TableData } from "./Interfaces";
 
 const Expenses = () => {
+    // Mês selecionado no seletor de datas.
+    const [selectedMonth, setSelectedMonth] = useState<number>(
+        new Date().getMonth()
+    );
+
     // Dados para a tabela de despesas mensais
     const data: TableData[] = [
         {
@@ -94,7 +102,10 @@ const Expenses = () => {
                             backgroundColor: colors.background,
                         }}
                     >
-                        <ExpensesGraph expenses={expenses} />
+                        <ExpensesGraph
+                            expenses={expenses}
+                            setSelectedMonth={setSelectedMonth}
+                        />
                     </Grid>
                     {/* Container da tabela de despesas mensais */}
                     <Grid
@@ -105,7 +116,10 @@ const Expenses = () => {
                             flexDirection: "column",
                         }}
                     >
-                        <ExpensesTable data={data} month="Janeiro" />
+                        <ExpensesTable
+                            data={data}
+                            month={months[selectedMonth].complete}
+                        />
                     </Grid>
                 </Grid>
             </Grid>
