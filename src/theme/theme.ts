@@ -44,7 +44,34 @@ const theme = createTheme({
             paper: "#ffffff",
         },
     },
-    colorSchemes: { light: false, dark: true },
+    colorSchemes: {
+        dark: {
+            palette: {
+                primary: {
+                    main: colors.blue.strong,
+                },
+                secondary: {
+                    main: colors.green.strong,
+                },
+                error: {
+                    main: "#f44336",
+                },
+                warning: {
+                    main: "#ff9800",
+                },
+                info: {
+                    main: "#2196f3",
+                },
+                success: {
+                    main: "#4caf50",
+                },
+                background: {
+                    default: colors.background,
+                    paper: "#ffffff",
+                },
+            },
+        },
+    },
 });
 
 export default theme;

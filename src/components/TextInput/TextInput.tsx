@@ -51,7 +51,7 @@ const TextInput = ({ label, isPassword, noType }: TextInputProps) => {
                             color: colors.black.strong, // cor do label quando não focado
                         },
                         "& .MuiInputLabel-root.Mui-focused": {
-                            color: colors.white.strong, // cor do label quando focado
+                            color: colors.black.strong, // cor do label quando focado
                         },
                     }}
                 />

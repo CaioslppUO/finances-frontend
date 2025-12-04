@@ -1,19 +1,18 @@
 // Toolpad
-import { AppProvider, type Session } from "@toolpad/core/AppProvider";
+import { type Session } from "@toolpad/core/AppProvider";
 
 // React
 import { useState, useMemo } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Páginas
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Expenses from "./pages/expenses/Expenses";
 
 // Tema
 import theme from "./theme/theme";
-
-// Páginas
-// import Login from "./pages/login/Login";
-// import Register from "./pages/register/Register";
-import Expenses from "./pages/expenses/Expenses";
-
-// Material UI
-import { AttachMoney } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/material/styles";
 
 // Date Picker
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -46,32 +45,25 @@ function App() {
     }, []);
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <AppProvider
-                session={session}
-                authentication={authentication}
-                theme={theme}
-                branding={{
-                    logo: (
-                        <img
-                            src="../public/logo.png"
-                            alt="Gerenciador de Despesas Logo"
+        <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Login />} />
+                        <Route
+                            path="/despesas"
+                            element={
+                                <Expenses
+                                    theme={theme}
+                                    authentication={authentication}
+                                    session={session}
+                                />
+                            }
                         />
-                    ),
-                    title: "Gerenciador de Despesas",
-                    homeUrl: "/",
-                }}
-                navigation={[
-                    {
-                        segment: "despesas",
-                        title: "Despesas",
-                        icon: <AttachMoney />,
-                    },
-                ]}
-            >
-                <Expenses />
-            </AppProvider>
-        </LocalizationProvider>
+                    </Routes>
+                </BrowserRouter>
+            </LocalizationProvider>
+        </ThemeProvider>
     );
 }
 

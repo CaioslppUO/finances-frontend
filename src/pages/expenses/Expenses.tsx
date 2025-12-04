@@ -3,6 +3,10 @@ import { useState } from "react";
 
 // Material UI
 import { Grid } from "@mui/material";
+import { AttachMoney } from "@mui/icons-material";
+
+// Toolpad
+import { AppProvider } from "@toolpad/core/AppProvider";
 
 // Toolpad
 import { DashboardLayout } from "@toolpad/core";
@@ -15,12 +19,12 @@ import ExpensesTable from "./ExpensesTable";
 import ExpensesGraph from "./ExpensesGraph";
 
 // Interfaces
-import { months, type TableData } from "./Interfaces";
+import { months, type ExpensesProps, type TableData } from "./Interfaces";
 
 /**
  * Exibe a página de despesas.
  */
-const Expenses = () => {
+const Expenses = ({ session, theme, authentication }: ExpensesProps) => {
     // Mês selecionado no seletor de datas.
     const [selectedMonth, setSelectedMonth] = useState<number>(
         new Date().getMonth()
@@ -117,56 +121,79 @@ const Expenses = () => {
     ];
 
     return (
-        <DashboardLayout defaultSidebarCollapsed>
-            {/* Container dos Dados do Dashboard */}
-            <Grid
-                container
-                sx={{
-                    flex: 1,
-                    border: 0,
-                    backgroundColor: colors.background,
-                }}
-            >
-                {/* Container interno dos Dados */}
+        <AppProvider
+            session={session}
+            authentication={authentication}
+            theme={theme}
+            branding={{
+                logo: (
+                    <img
+                        src="../public/logo.png"
+                        alt="Gerenciador de Despesas Logo"
+                    />
+                ),
+                title: "Gerenciador de Despesas",
+                homeUrl: "/",
+            }}
+            navigation={[
+                {
+                    segment: "despesas",
+                    title: "Despesas",
+                    icon: <AttachMoney />,
+                },
+            ]}
+        >
+            <DashboardLayout defaultSidebarCollapsed>
+                {/* Container dos Dados do Dashboard */}
                 <Grid
                     container
-                    size={12}
-                    p={1}
-                    spacing={1.5}
                     sx={{
-                        alignItems: "center",
+                        flex: 1,
+                        border: 0,
+                        backgroundColor: colors.background,
                     }}
                 >
-                    {/* Container do gráfico de barras */}
+                    {/* Container interno dos Dados */}
                     <Grid
                         container
                         size={12}
+                        p={1}
+                        spacing={1.5}
                         sx={{
-                            backgroundColor: colors.background,
+                            alignItems: "center",
                         }}
                     >
-                        <ExpensesGraph
-                            expenses={expenses}
-                            setSelectedMonth={setSelectedMonth}
-                        />
-                    </Grid>
-                    {/* Container da tabela de despesas mensais */}
-                    <Grid
-                        size={12}
-                        sx={{
-                            backgroundColor: colors.white.strong,
-                            display: "flex",
-                            flexDirection: "column",
-                        }}
-                    >
-                        <ExpensesTable
-                            data={data}
-                            month={months[selectedMonth].complete}
-                        />
+                        {/* Container do gráfico de barras */}
+                        <Grid
+                            container
+                            size={12}
+                            sx={{
+                                backgroundColor: colors.background,
+                            }}
+                        >
+                            <ExpensesGraph
+                                expenses={expenses}
+                                setSelectedMonth={setSelectedMonth}
+                            />
+                        </Grid>
+                        {/* Container da tabela de despesas mensais */}
+                        <Grid
+                            size={12}
+                            sx={{
+                                backgroundColor: colors.white.strong,
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <ExpensesTable
+                                data={data}
+                                month={months[selectedMonth].complete}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-        </DashboardLayout>
+            </DashboardLayout>
+        </AppProvider>
     );
 };
 

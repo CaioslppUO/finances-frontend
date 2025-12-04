@@ -1,6 +1,6 @@
 // Material UI
-import { Box, Grid, Typography } from "@mui/material";
 import { BarChart } from "@mui/icons-material";
+import { Box, Grid, Typography } from "@mui/material";
 
 // Cores
 import { colors } from "../../theme/theme";
@@ -43,11 +43,11 @@ const Login = () => {
                         />
                     </Grid>
                     {/* Usuário */}
-                    <Grid size={12} mt={6}>
+                    <Grid size={12} mt={6} px={1}>
                         <TextInput label="Usuário" />
                     </Grid>
                     {/* Senha */}
-                    <Grid size={12} mt={6}>
+                    <Grid size={12} mt={6} px={1}>
                         <TextInput label="Senha" isPassword />
                     </Grid>
                     {/* Botão de login */}
@@ -56,7 +56,10 @@ const Login = () => {
                     </Grid>
                     {/* Criar Conta */}
                     <Grid size={12} mt={4} sx={{ textAlign: "center" }}>
-                        <Typography display="inline">
+                        <Typography
+                            display="inline"
+                            color={colors.black.strong}
+                        >
                             Não possui conta?{" "}
                         </Typography>
                         <Typography

@@ -1,4 +1,12 @@
+// React
 import type React from "react";
+
+// Toolpad
+import {
+    type AppTheme,
+    type Authentication,
+    type Session,
+} from "@toolpad/core/AppProvider";
 
 export interface TableData {
     date: string;
@@ -81,3 +89,9 @@ export const months: Month[] = [
         complete: "Dezembro",
     },
 ];
+
+export interface ExpensesProps {
+    session: Session | null | undefined;
+    theme: AppTheme | undefined;
+    authentication: Authentication | null | undefined;
+}

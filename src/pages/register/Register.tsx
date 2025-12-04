@@ -60,7 +60,10 @@ const Register = () => {
                     </Grid>
                     {/* Criar Conta */}
                     <Grid size={12} mt={4} sx={{ textAlign: "center" }}>
-                        <Typography display="inline">
+                        <Typography
+                            display="inline"
+                            color={colors.black.strong}
+                        >
                             Já possui conta?{" "}
                         </Typography>
                         <Typography

@@ -32,7 +32,9 @@ const TitleAndSubtitle = ({
         >
             {/* Título */}
             <Grid size={12}>
-                <Typography variant="h3">{title}</Typography>
+                <Typography variant="h3" color={colors.black.strong}>
+                    {title}
+                </Typography>
             </Grid>
             {/* Subtítulo */}
             <Grid
