@@ -1,3 +1,6 @@
+// React
+import { useNavigate } from "react-router-dom";
+
 // Material UI
 import { BarChart } from "@mui/icons-material";
 import { Box, Grid, Typography } from "@mui/material";
@@ -12,6 +15,9 @@ import ConfirmButton from "../../components/Buttons/ConfirmButton";
 import TitleAndSubtitle from "../../components/TitleAndSubtitle/TitleAndSubtitle";
 
 const Login = () => {
+    // Navegação
+    const navigate = useNavigate();
+
     return (
         <Page>
             {/* Container */}
@@ -69,6 +75,7 @@ const Login = () => {
                                 textDecoration: "underline",
                                 cursor: "pointer",
                             }}
+                            onClick={() => navigate("/registrar")}
                         >
                             registre-se!
                         </Typography>

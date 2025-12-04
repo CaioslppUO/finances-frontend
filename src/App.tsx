@@ -50,6 +50,7 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login />} />
+                        <Route path="/login" element={<Login />} />
                         <Route
                             path="/despesas"
                             element={
@@ -60,6 +61,7 @@ function App() {
                                 />
                             }
                         />
+                        <Route path="/registrar" element={<Register />} />
                     </Routes>
                 </BrowserRouter>
             </LocalizationProvider>

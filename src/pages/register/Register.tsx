@@ -1,3 +1,6 @@
+// React
+import { useNavigate } from "react-router-dom";
+
 // Material UI
 import { Box, Grid, Typography } from "@mui/material";
 import { BarChart } from "@mui/icons-material";
@@ -12,6 +15,9 @@ import ConfirmButton from "../../components/Buttons/ConfirmButton";
 import TitleAndSubtitle from "../../components/TitleAndSubtitle/TitleAndSubtitle";
 
 const Register = () => {
+    // Navegação
+    const navigate = useNavigate();
+
     return (
         <Page>
             {/* Container */}
@@ -43,20 +49,20 @@ const Register = () => {
                         />
                     </Grid>
                     {/* Usuário */}
-                    <Grid size={12} mt={4}>
+                    <Grid size={12} mt={4} px={1}>
                         <TextInput label="Usuário" />
                     </Grid>
                     {/* E-mail */}
-                    <Grid size={12} mt={4}>
+                    <Grid size={12} mt={4} px={1}>
                         <TextInput label="E-Mail" />
                     </Grid>
                     {/* Senha */}
-                    <Grid size={12} mt={4}>
+                    <Grid size={12} mt={4} px={1}>
                         <TextInput label="Senha" isPassword />
                     </Grid>
                     {/* Botão de login */}
                     <Grid size={12} mt={4}>
-                        <ConfirmButton text="Entrar" />
+                        <ConfirmButton text="Registrar" />
                     </Grid>
                     {/* Criar Conta */}
                     <Grid size={12} mt={4} sx={{ textAlign: "center" }}>
@@ -73,6 +79,7 @@ const Register = () => {
                                 textDecoration: "underline",
                                 cursor: "pointer",
                             }}
+                            onClick={() => navigate("/login")}
                         >
                             Faça login!
                         </Typography>
