@@ -23,7 +23,7 @@ function App() {
         user: {
             name: "Caio Cezar",
             email: "caioslppuo@gmail.com",
-            image: "https://avatars.githubusercontent.com/u/37354152?v=4",
+            // image: "https://avatars.githubusercontent.com/u/37354152?v=4",
         },
     });
 
@@ -34,7 +34,7 @@ function App() {
                     user: {
                         name: "Caio Cezar",
                         email: "caioslppuo@gmail.com",
-                        image: "https://avatars.githubusercontent.com/u/37354152?v=4",
+                        // image: "https://avatars.githubusercontent.com/u/37354152?v=4",
                     },
                 });
             },

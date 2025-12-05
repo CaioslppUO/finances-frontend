@@ -143,7 +143,12 @@ const Expenses = ({ session, theme, authentication }: ExpensesProps) => {
                 },
             ]}
         >
-            <DashboardLayout defaultSidebarCollapsed>
+            <DashboardLayout
+                defaultSidebarCollapsed
+                sx={{
+                    backgroundColor: "Background.default",
+                }}
+            >
                 {/* Container dos Dados do Dashboard */}
                 <Grid
                     container
