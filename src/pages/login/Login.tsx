@@ -104,6 +104,7 @@ const Login = () => {
                             label="Usuário"
                             text={username}
                             setText={setUsername}
+                            onEnter={doLogin}
                         />
                     </Grid>
                     {/* Senha */}
@@ -113,6 +114,7 @@ const Login = () => {
                             isPassword
                             text={password}
                             setText={setPassword}
+                            onEnter={doLogin}
                         />
                     </Grid>
                     {/* Botão de login */}

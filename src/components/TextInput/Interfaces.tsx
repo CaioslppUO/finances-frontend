@@ -16,4 +16,7 @@ export interface TextInputProps {
     // Textos exibidos
     text: string;
     setText: React.Dispatch<React.SetStateAction<string>>;
+
+    // Função executada ao apertar a tecla enter.
+    onEnter?: () => void;
 }

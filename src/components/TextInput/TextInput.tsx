@@ -12,6 +12,7 @@ import { colors } from "../../theme/theme";
  * @param noType Indica para não usar nenhum tipo específico.
  * @param text Estado que controla o texto exibido.
  * @param setText Setter do estado que controla o texto exibido.
+ * @param onEnter Função executada ao apertar a tecla enter do teclado.
  * @returns Componente que exibe um input de texto.
  */
 const TextInput = ({
@@ -20,7 +21,17 @@ const TextInput = ({
     noType,
     text,
     setText,
+    onEnter,
 }: TextInputProps) => {
+    /**
+     * Chama a função onEnter caso tenha sido passada como argumento.
+     * @param key Tecla pressionada no teclado.
+     */
+    const onKeyDown = (key: string): void => {
+        if (key != "Enter") return;
+        if (onEnter) onEnter();
+    };
+
     return (
         <Grid
             container
@@ -38,6 +49,9 @@ const TextInput = ({
                         setText(event.target.value);
                     }}
                     value={text}
+                    onKeyDown={(event) => {
+                        onKeyDown(event.key);
+                    }}
                     sx={{
                         width: "100%",
                         "& .MuiOutlinedInput-root": {
