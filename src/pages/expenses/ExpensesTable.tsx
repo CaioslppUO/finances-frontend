@@ -297,7 +297,6 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                 `/api/expenses/?month=${date.getMonth() + 1}&year=${date.getFullYear()}`
             ).then((res) => {
                 res.data.forEach((row: ExpensesBackendProps) => {
-                    console.log(row);
                     tmp.push({
                         date: new Date(
                             `${row.date}T00:00:00`
@@ -322,7 +321,6 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                                 : "undefined",
                     });
                 });
-                // console.log(tmp);
                 setTableData(tmp);
             });
         } catch (error) {

@@ -18,7 +18,6 @@ export interface ExpensesTableProps {
 }
 
 export interface ExpensesGraphProps {
-    expenses: number[];
     setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 

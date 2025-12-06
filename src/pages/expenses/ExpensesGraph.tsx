@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Material UI
 import { Grid, Typography } from "@mui/material";
@@ -15,14 +15,21 @@ import { formatCurrency } from "../../utils/Utils";
 // Interfaces
 import { months, type ExpensesGraphProps } from "./Interfaces";
 
+// Services
+import { api } from "../../services/api";
+
 /**
  * Componente responsável por exibir o gráfico das despesas mensais.
- * @param expenses Lista de despesas mensais.
  * @param setSelectedDate Função para definir a data selecionada.
  */
-const ExpensesGraph = ({ expenses, setSelectedDate }: ExpensesGraphProps) => {
+const ExpensesGraph = ({ setSelectedDate }: ExpensesGraphProps) => {
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
+
+    // Dados para o gráfico de barras
+    const [expenses, setExpenses] = useState<number[]>([
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]);
 
     /**
      * Handler para a alteração de data do calendário.
@@ -59,6 +66,17 @@ const ExpensesGraph = ({ expenses, setSelectedDate }: ExpensesGraphProps) => {
         ],
         height: 350,
     };
+
+    // Atualiza os dados sempre que o ano mudar.
+    useEffect(() => {
+        try {
+            api.get(`api/expenses/year/?year=${year}`).then((response) => {
+                setExpenses(response.data);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, [year]);
 
     return (
         <Grid container sx={{ flex: 1 }}>

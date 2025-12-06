@@ -67,96 +67,6 @@ const Expenses = ({ theme }: ExpensesProps) => {
     // Data selecionada no seletor de datas.
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-    // Dados para a tabela de despesas mensais
-    // const data: TableData[] = [
-    //     {
-    //         date: "25/08/2025",
-    //         description: "Compra de salgados na padaria do PTI",
-    //         type: "Conta",
-    //         budget: "Lazer",
-    //         payment: "Cartão Inter",
-    //         value: 32.25,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "28/10/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    //     {
-    //         date: "27/08/2025",
-    //         description: "Reposição de Remédios",
-    //         type: "Conta",
-    //         budget: "Custo Fixo",
-    //         payment: "Cartão Inter",
-    //         value: 25.31,
-    //     },
-    // ];
-
-    // Dados para o gráfico de barras
-    const expenses = [
-        1200.25, 950.31, 1100.27, 1350.83, 980.01, 1500.15, 1250.22, 1400.33,
-        1000.513, 1600.12, 1300.54, 1450.13,
-    ];
-
     /**
      * Sempre que o usuário for autenticado, preenche os dados de sessão.
      */
@@ -236,10 +146,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                                 backgroundColor: colors.background,
                             }}
                         >
-                            <ExpensesGraph
-                                expenses={expenses}
-                                setSelectedDate={setSelectedDate}
-                            />
+                            <ExpensesGraph setSelectedDate={setSelectedDate} />
                         </Grid>
                         {/* Container da tabela de despesas mensais */}
                         <Grid
