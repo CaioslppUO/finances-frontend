@@ -56,10 +56,8 @@ const Expenses = ({ theme }: ExpensesProps) => {
         };
     }, []);
 
-    // Mês selecionado no seletor de datas.
-    const [selectedMonth, setSelectedMonth] = useState<number>(
-        new Date().getMonth()
-    );
+    // Data selecionada no seletor de datas.
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     // Dados para a tabela de despesas mensais
     const data: TableData[] = [
@@ -187,7 +185,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                     />
                 ),
                 title: "Gerenciador de Despesas",
-                homeUrl: "/",
+                homeUrl: "/despesas",
             }}
             navigation={[
                 {
@@ -232,7 +230,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                         >
                             <ExpensesGraph
                                 expenses={expenses}
-                                setSelectedMonth={setSelectedMonth}
+                                setSelectedDate={setSelectedDate}
                             />
                         </Grid>
                         {/* Container da tabela de despesas mensais */}
@@ -246,7 +244,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                         >
                             <ExpensesTable
                                 data={data}
-                                month={months[selectedMonth].complete}
+                                month={months[selectedDate.getMonth()].complete}
                             />
                         </Grid>
                     </Grid>

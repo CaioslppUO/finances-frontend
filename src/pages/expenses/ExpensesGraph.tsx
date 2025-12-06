@@ -18,9 +18,9 @@ import { months, type ExpensesGraphProps } from "./Interfaces";
 /**
  * Componente responsável por exibir o gráfico das despesas mensais.
  * @param expenses Lista de despesas mensais.
- * @param setSelectedMonth Função para definir o mês selecionado.
+ * @param setSelectedDate Função para definir a data selecionada.
  */
-const ExpensesGraph = ({ expenses, setSelectedMonth }: ExpensesGraphProps) => {
+const ExpensesGraph = ({ expenses, setSelectedDate }: ExpensesGraphProps) => {
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
 
@@ -32,7 +32,7 @@ const ExpensesGraph = ({ expenses, setSelectedMonth }: ExpensesGraphProps) => {
         if (data === null) return;
         setMonth(data.month());
         setYear(data.year());
-        setSelectedMonth(data.month());
+        setSelectedDate(data.toDate());
     };
 
     const chartProps: BarChartProps = {

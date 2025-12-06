@@ -24,7 +24,7 @@ export interface ExpensesTableProps {
 
 export interface ExpensesGraphProps {
     expenses: number[];
-    setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
+    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 export interface TypesProps {
