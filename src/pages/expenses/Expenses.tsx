@@ -18,10 +18,18 @@ import ExpensesTable from "./ExpensesTable";
 import ExpensesGraph from "./ExpensesGraph";
 
 // Interfaces
-import { months, type ExpensesProps, type TableData } from "./Interfaces";
+import {
+    months,
+    type ExpensesBackendProps,
+    type ExpensesProps,
+    type TableData,
+} from "./Interfaces";
 
 // Contexto
 import { useAuth } from "../../context/AuthContext/AuthContext";
+
+// Services
+import { api } from "../../services/api";
 
 /**
  * Exibe a página de despesas.
@@ -60,88 +68,88 @@ const Expenses = ({ theme }: ExpensesProps) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     // Dados para a tabela de despesas mensais
-    const data: TableData[] = [
-        {
-            date: "25/08/2025",
-            description: "Compra de salgados na padaria do PTI",
-            type: "Conta",
-            budget: "Lazer",
-            payment: "Cartão Inter",
-            value: 32.25,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "28/10/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-        {
-            date: "27/08/2025",
-            description: "Reposição de Remédios",
-            type: "Conta",
-            budget: "Custo Fixo",
-            payment: "Cartão Inter",
-            value: 25.31,
-        },
-    ];
+    // const data: TableData[] = [
+    //     {
+    //         date: "25/08/2025",
+    //         description: "Compra de salgados na padaria do PTI",
+    //         type: "Conta",
+    //         budget: "Lazer",
+    //         payment: "Cartão Inter",
+    //         value: 32.25,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "28/10/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    //     {
+    //         date: "27/08/2025",
+    //         description: "Reposição de Remédios",
+    //         type: "Conta",
+    //         budget: "Custo Fixo",
+    //         payment: "Cartão Inter",
+    //         value: 25.31,
+    //     },
+    // ];
 
     // Dados para o gráfico de barras
     const expenses = [
@@ -242,10 +250,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                                 flexDirection: "column",
                             }}
                         >
-                            <ExpensesTable
-                                data={data}
-                                month={months[selectedDate.getMonth()].complete}
-                            />
+                            <ExpensesTable date={selectedDate} />
                         </Grid>
                     </Grid>
                 </Grid>

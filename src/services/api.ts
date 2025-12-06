@@ -11,9 +11,10 @@ export const api = axios.create({
  * Intercepta requisições da API para usar o access token caso o usuário já esteja logado.
  */
 api.interceptors.request.use((config) => {
-    const access = localStorage.getItem("access");
+    const data = localStorage.getItem("authData");
 
-    if (access) {
+    if (data) {
+        const access = JSON.parse(data)["access"];
         config.headers.Authorization = `Bearer ${access}`;
     }
 
@@ -21,64 +22,64 @@ api.interceptors.request.use((config) => {
 });
 
 // Renovação de token
-let isRefreshing = false;
-let failedQueue: any[] = [];
+// let isRefreshing = false;
+// let failedQueue: any[] = [];
 
-const processQueue = (error: any, token: string | null = null) => {
-    failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
-    });
+// const processQueue = (error: any, token: string | null = null) => {
+//     failedQueue.forEach((prom) => {
+//         if (error) {
+//             prom.reject(error);
+//         } else {
+//             prom.resolve(token);
+//         }
+//     });
 
-    failedQueue = [];
-};
+//     failedQueue = [];
+// };
 
-api.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
+// api.interceptors.response.use(
+//     (response) => response,
+//     async (error) => {
+//         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            // Guarda a requisição para tentar novamente após atualizar o token
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                }).then((token) => {
-                    originalRequest.headers.Authorization = `Bearer ${token}`;
-                    return api(originalRequest);
-                });
-            }
+//         if (error.response?.status === 401 && !originalRequest._retry) {
+//             // Guarda a requisição para tentar novamente após atualizar o token
+//             if (isRefreshing) {
+//                 return new Promise((resolve, reject) => {
+//                     failedQueue.push({ resolve, reject });
+//                 }).then((token) => {
+//                     originalRequest.headers.Authorization = `Bearer ${token}`;
+//                     return api(originalRequest);
+//                 });
+//             }
 
-            originalRequest._retry = true;
-            isRefreshing = true;
+//             originalRequest._retry = true;
+//             isRefreshing = true;
 
-            try {
-                const refresh = localStorage.getItem("refresh");
+//             try {
+//                 const refresh = localStorage.getItem("refresh");
 
-                const response = await axios.post(`${baseURL}/api/refresh/`, {
-                    refresh,
-                });
+//                 const response = await axios.post(`${baseURL}/api/refresh/`, {
+//                     refresh,
+//                 });
 
-                const newAccess = response.data.access;
-                localStorage.setItem("access", newAccess);
+//                 const newAccess = response.data.access;
+//                 localStorage.setItem("access", newAccess);
 
-                api.defaults.headers.common.Authorization = `Bearer ${newAccess}`;
+//                 api.defaults.headers.common.Authorization = `Bearer ${newAccess}`;
 
-                processQueue(null, newAccess);
-                return api(originalRequest);
-            } catch (err) {
-                processQueue(err, null);
-                localStorage.clear();
-                // window.location.href = "/login";
-                return Promise.reject(err);
-            } finally {
-                isRefreshing = false;
-            }
-        }
+//                 processQueue(null, newAccess);
+//                 return api(originalRequest);
+//             } catch (err) {
+//                 processQueue(err, null);
+//                 localStorage.clear();
+//                 // window.location.href = "/login";
+//                 return Promise.reject(err);
+//             } finally {
+//                 isRefreshing = false;
+//             }
+//         }
 
-        return Promise.reject(error);
-    }
-);
+//         return Promise.reject(error);
+//     }
+// );

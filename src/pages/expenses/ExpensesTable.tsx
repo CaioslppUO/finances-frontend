@@ -1,5 +1,5 @@
 // React
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 // Table
 import {
@@ -26,12 +26,20 @@ import {
 import { colors } from "../../theme/theme";
 
 // Interfaces
-import type { ExpensesTableProps, TableData } from "./Interfaces";
+import {
+    months,
+    type ExpensesBackendProps,
+    type ExpensesTableProps,
+    type TableData,
+} from "./Interfaces";
 
 // Componentes
 import BudgetTypes from "./BudgetTypes";
 import PaymentTypes from "./PaymentTypes";
 import ExpensesTypes from "./ExpensesTypes";
+
+// Services
+import { api } from "../../services/api";
 
 /**
  * Função responsável por criar uma coluna simples para a tabela.
@@ -138,10 +146,12 @@ const getActionsColumn = (
 
 /**
  * Componente responsável por exibir a tabela de despesas mensais.
- * @param data Dados para exibir na tabela.
- * @param month Mês sobre os quais são referentes os dados.
+ * @param date Data sobre os quais são referentes os dados.
  */
-const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
+const ExpensesTable = ({ date }: ExpensesTableProps) => {
+    // Dados da tabela
+    const [tableData, setTableData] = useState<TableData[]>([]);
+
     const [showExpensesTypes, setShowExpensesTypes] = useState<boolean>(false);
     const [showBudgetTypes, setShowBudgetTypes] = useState<boolean>(false);
     const [showPaymentTypes, setShowPaymentTypes] = useState<boolean>(false);
@@ -209,7 +219,7 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
 
     const table = useMaterialReactTable({
         columns,
-        data,
+        data: tableData,
         enableRowSelection: false,
         enableColumnOrdering: false,
         enableGlobalFilter: false,
@@ -245,7 +255,7 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
                 variant="h6"
                 sx={{ color: colors.white.strong, flexGrow: 1 }}
             >
-                Despesas Mensais - {month}
+                Despesas Mensais - {months[date.getMonth()].complete}
             </Typography>
         ),
         renderToolbarInternalActions: ({ table }) => (
@@ -266,6 +276,41 @@ const ExpensesTable = ({ data, month }: ExpensesTableProps) => {
             </>
         ),
     });
+
+    /**
+     * Busca os dados do mês selecionado sempre que o mês for alterado.
+     */
+    useEffect(() => {
+        try {
+            const tmp: TableData[] = [];
+            api.get(
+                `/api/expenses/?month=${date.getMonth() + 1}&year=${date.getFullYear()}`
+            ).then((res) => {
+                res.data.forEach((row: ExpensesBackendProps) => {
+                    tmp.push({
+                        date: row.date,
+                        description: row.description,
+                        value: parseFloat(row.value),
+                        type:
+                            row.type_name != undefined
+                                ? row.type_name
+                                : "undefined",
+                        budget:
+                            row.budget_name != undefined
+                                ? row.budget_name
+                                : "undefined",
+                        payment:
+                            row.payment_method != undefined
+                                ? row.payment_method
+                                : "undefined",
+                    });
+                });
+                setTableData(tmp);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, [date]);
 
     return (
         <Grid

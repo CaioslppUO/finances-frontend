@@ -84,7 +84,7 @@ const ExpensesGraph = ({ expenses, setSelectedDate }: ExpensesGraphProps) => {
                         views={["month", "year"]}
                         onAccept={handleDateChange}
                         defaultValue={dayjs()
-                            .set("month", month - 1)
+                            .set("month", month)
                             .startOf("month")}
                     />
                 </Grid>

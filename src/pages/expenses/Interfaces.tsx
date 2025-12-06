@@ -2,11 +2,7 @@
 import type React from "react";
 
 // Toolpad
-import {
-    type AppTheme,
-    type Authentication,
-    type Session,
-} from "@toolpad/core/AppProvider";
+import { type AppTheme } from "@toolpad/core/AppProvider";
 
 export interface TableData {
     date: string;
@@ -18,8 +14,7 @@ export interface TableData {
 }
 
 export interface ExpensesTableProps {
-    data: TableData[];
-    month: string;
+    date: Date;
 }
 
 export interface ExpensesGraphProps {
@@ -92,4 +87,17 @@ export const months: Month[] = [
 
 export interface ExpensesProps {
     theme: AppTheme | undefined;
+}
+
+export interface ExpensesBackendProps {
+    expense_id: number;
+    description: string;
+    value: string;
+    date: string;
+    type_name: string;
+    budget_name: string;
+    payment_method: string;
+    fk_type_id: number;
+    fk_budget_id: number;
+    fk_payment_id: number;
 }
