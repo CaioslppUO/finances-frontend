@@ -1,15 +1,14 @@
 // React
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
 
 // Material UI
 import { Grid } from "@mui/material";
 import { AttachMoney } from "@mui/icons-material";
 
 // Toolpad
-import { AppProvider } from "@toolpad/core/AppProvider";
-
-// Toolpad
 import { DashboardLayout } from "@toolpad/core";
+import { AppProvider, type Session } from "@toolpad/core/AppProvider";
 
 // Utils
 import { colors } from "../../theme/theme";
@@ -21,10 +20,42 @@ import ExpensesGraph from "./ExpensesGraph";
 // Interfaces
 import { months, type ExpensesProps, type TableData } from "./Interfaces";
 
+// Contexto
+import { useAuth } from "../../context/AuthContext/AuthContext";
+
 /**
  * Exibe a página de despesas.
  */
-const Expenses = ({ session, theme, authentication }: ExpensesProps) => {
+const Expenses = ({ theme }: ExpensesProps) => {
+    // Contexto de autenticação.
+    const auth = useAuth();
+
+    // Navegação
+    const navigate = useNavigate();
+
+    // Estado inicial da sessão do usuário logado.
+    const [session, setSession] = useState<Session | null>({
+        user: {
+            name: auth.user?.username,
+            email: auth.user?.email,
+            // image: "https://avatars.githubusercontent.com/u/37354152?v=4",
+        },
+    });
+
+    const authentication = useMemo(() => {
+        return {
+            signIn: () => {
+                // Não utilizado.
+                // navigate("/login");
+            },
+            signOut: () => {
+                setSession(null);
+                auth.logout();
+                navigate("/login");
+            },
+        };
+    }, []);
+
     // Mês selecionado no seletor de datas.
     const [selectedMonth, setSelectedMonth] = useState<number>(
         new Date().getMonth()
@@ -119,6 +150,29 @@ const Expenses = ({ session, theme, authentication }: ExpensesProps) => {
         1200.25, 950.31, 1100.27, 1350.83, 980.01, 1500.15, 1250.22, 1400.33,
         1000.513, 1600.12, 1300.54, 1450.13,
     ];
+
+    /**
+     * Sempre que o usuário for autenticado, preenche os dados de sessão.
+     */
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            setSession({
+                user: {
+                    name: auth.user?.username,
+                    email: auth.user?.email,
+                },
+            });
+        } else {
+            // Envia o usuário para a página de login
+            setSession({
+                user: {
+                    name: undefined,
+                    email: undefined,
+                },
+            });
+            navigate("/login");
+        }
+    }, [auth.isAuthenticated]);
 
     return (
         <AppProvider

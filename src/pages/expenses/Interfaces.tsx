@@ -91,7 +91,5 @@ export const months: Month[] = [
 ];
 
 export interface ExpensesProps {
-    session: Session | null | undefined;
     theme: AppTheme | undefined;
-    authentication: Authentication | null | undefined;
 }

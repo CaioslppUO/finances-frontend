@@ -1,3 +1,5 @@
+import type React from "react";
+
 /**
  * Propridades do componente TextInput.
  */
@@ -10,4 +12,8 @@ export interface TextInputProps {
 
     /** Indica que não é para usar nenhum tipo específico */
     noType?: boolean;
+
+    // Textos exibidos
+    text: string;
+    setText: React.Dispatch<React.SetStateAction<string>>;
 }

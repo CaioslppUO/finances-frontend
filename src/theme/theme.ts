@@ -66,7 +66,7 @@ const theme = createTheme({
                     main: "#4caf50",
                 },
                 background: {
-                    default: colors.black.strong,
+                    default: colors.background,
                     paper: "#141414ff",
                 },
             },

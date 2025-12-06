@@ -10,9 +10,17 @@ import { colors } from "../../theme/theme";
  * @param label Título do input.
  * @param isPassword Indica se o campo é uma senha ou não.
  * @param noType Indica para não usar nenhum tipo específico.
+ * @param text Estado que controla o texto exibido.
+ * @param setText Setter do estado que controla o texto exibido.
  * @returns Componente que exibe um input de texto.
  */
-const TextInput = ({ label, isPassword, noType }: TextInputProps) => {
+const TextInput = ({
+    label,
+    isPassword,
+    noType,
+    text,
+    setText,
+}: TextInputProps) => {
     return (
         <Grid
             container
@@ -26,6 +34,10 @@ const TextInput = ({ label, isPassword, noType }: TextInputProps) => {
                     label={label}
                     variant="outlined"
                     type={isPassword ? "password" : noType ? "text" : "email"}
+                    onChange={(event) => {
+                        setText(event.target.value);
+                    }}
+                    value={text}
                     sx={{
                         width: "100%",
                         "& .MuiOutlinedInput-root": {
