@@ -195,7 +195,13 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                     </i>
                 ),
                 Cell: ({ cell }) => (
-                    <i>R$ {cell.getValue<number>().toLocaleString()}</i>
+                    <i>
+                        R${" "}
+                        {cell.getValue<number>().toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        })}
+                    </i>
                 ),
                 Footer: ({ table }) => {
                     const total = table
@@ -207,7 +213,11 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                             fontSize="0.9rem"
                             color={colors.white.strong}
                         >
-                            Total: R$ {total.toLocaleString()}
+                            Total: R${" "}
+                            {total.toLocaleString("pt-BR", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
                         </Typography>
                     );
                 },
@@ -287,8 +297,15 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                 `/api/expenses/?month=${date.getMonth() + 1}&year=${date.getFullYear()}`
             ).then((res) => {
                 res.data.forEach((row: ExpensesBackendProps) => {
+                    console.log(row);
                     tmp.push({
-                        date: row.date,
+                        date: new Date(
+                            `${row.date}T00:00:00`
+                        ).toLocaleDateString("pt-BR", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                        }),
                         description: row.description,
                         value: parseFloat(row.value),
                         type:
@@ -305,6 +322,7 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                                 : "undefined",
                     });
                 });
+                // console.log(tmp);
                 setTableData(tmp);
             });
         } catch (error) {
