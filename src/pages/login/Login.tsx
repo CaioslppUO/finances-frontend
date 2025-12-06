@@ -61,9 +61,9 @@ const Login = () => {
      * Tenta fazer login com os dados já registrados no localstorage, caso existam.
      */
     useEffect(() => {
-        const access = localStorage.getItem("access");
-
-        if (access) {
+        const data = localStorage.getItem("authData");
+        if (data) {
+            auth.login(JSON.parse(data));
             navigate("/despesas");
         }
     }, []);
