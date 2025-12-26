@@ -5,4 +5,12 @@ export interface ListManagementModalProps {
     showModal: boolean;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     title: string;
+    itens: ListItem[];
+    onAdd: (value: string) => void;
+}
+
+export interface ListItem {
+    id: number;
+    displayValue: string;
+    isActive: boolean;
 }

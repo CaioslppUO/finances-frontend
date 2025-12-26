@@ -10,6 +10,7 @@ const BudgetTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             showModal={showTypes}
             setShowModal={setShowTypes}
             title={title}
+            itens={[]}
         />
     );
 };

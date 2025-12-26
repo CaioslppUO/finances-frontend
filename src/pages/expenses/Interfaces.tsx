@@ -100,3 +100,10 @@ export interface ExpensesBackendProps {
     fk_budget_id: number;
     fk_payment_id: number;
 }
+
+export interface ExpenseTypeBackendProps {
+    expense_type_id: number;
+    type: string;
+    is_active: boolean;
+    fk_user_id: number;
+}

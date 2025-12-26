@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Material UI
 import { Add, Delete } from "@mui/icons-material";
@@ -38,14 +38,20 @@ const ListManagementModal = ({
     showModal,
     setShowModal,
     title,
+    itens,
+    onAdd,
 }: ListManagementModalProps) => {
+    // Controle de edição/deleção de elementos
     const [idToEdit, setIdToEdit] = useState<number | undefined>(undefined);
     const [idToDelete, setIdToDelete] = useState<number | undefined>(undefined);
 
+    // Novo valor adicionado
+    const [newItemText, setNewItemText] = useState<string>("");
+
     /**
-     * Função executada ao clicar no botão de cancelar.
+     * Função executada ao clicar no botão de fechar.
      */
-    const onCancelClick = (): void => {
+    const onCloseClick = (): void => {
         setShowModal(false);
     };
 
@@ -101,6 +107,24 @@ const ListManagementModal = ({
         setIdToDelete(undefined);
     };
 
+    /**
+     * Função chamda ao clicar no botão de adicionar novo tipo.
+     */
+    const onAddItem = (): void => {
+        onAdd(newItemText);
+
+        // Limpa o texto após adicionar.
+        setNewItemText("");
+    };
+
+    /**
+     * Limpa o texto preenchido no campo de adicionar sempre que o modal for fechado.
+     */
+    useEffect(() => {
+        if (showModal == true) return;
+        setNewItemText("");
+    }, [showModal]);
+
     return (
         <Modal
             open={showModal}
@@ -138,11 +162,16 @@ const ListManagementModal = ({
                 {/* Cadastro de novos tipos */}
                 <Grid container size={12} mt={2}>
                     <Grid sx={{ flex: 1 }}>
-                        <TextInput label="Novo tipo" noType={true} />
+                        <TextInput
+                            text={newItemText}
+                            setText={setNewItemText}
+                            label="Novo tipo"
+                            noType={true}
+                        />
                     </Grid>
                     <Grid mr={1}>
                         <Tooltip title="Adicionar novo tipo de despesa">
-                            <IconButton>
+                            <IconButton onClick={onAddItem}>
                                 <Add fontSize="large" sx={{ color: "green" }} />
                             </IconButton>
                         </Tooltip>
@@ -161,16 +190,16 @@ const ListManagementModal = ({
                             overflowY: "auto",
                         }}
                     >
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
+                        {itens.map((item, index) => (
                             <ListItem
-                                key={value}
+                                key={item.id}
                                 disableGutters
                                 secondaryAction={
                                     <Grid container>
                                         <Grid>
                                             <IconButton
                                                 onClick={() =>
-                                                    onEditClick(value)
+                                                    onEditClick(item.id)
                                                 }
                                             >
                                                 <EditIcon />
@@ -179,7 +208,7 @@ const ListManagementModal = ({
                                         <Grid>
                                             <IconButton
                                                 onClick={() =>
-                                                    onDeleteClick(value)
+                                                    onDeleteClick(item.id)
                                                 }
                                             >
                                                 <Delete />
@@ -188,7 +217,9 @@ const ListManagementModal = ({
                                     </Grid>
                                 }
                             >
-                                <ListItemText primary={`Line item ${value}`} />
+                                <ListItemText
+                                    primary={`${index + 1} - ${item.displayValue}`}
+                                />
                             </ListItem>
                         ))}
                     </List>
@@ -211,7 +242,7 @@ const ListManagementModal = ({
                                 width: "6rem",
                                 textTransform: "none",
                             }}
-                            onClick={onCancelClick}
+                            onClick={onCloseClick}
                         >
                             Fechar
                         </Button>
