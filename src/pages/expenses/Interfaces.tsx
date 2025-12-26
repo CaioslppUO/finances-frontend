@@ -114,3 +114,10 @@ export interface BudgetsBackendProps {
     is_active: boolean;
     fk_user_id: number;
 }
+
+export interface PaymentsBackendProps {
+    expense_payment_id: number;
+    payment: string;
+    is_active: boolean;
+    fk_user_id: number;
+}

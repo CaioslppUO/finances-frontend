@@ -81,6 +81,16 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
      * @param newValue Novo texto para a despesa.
      */
     const onEdit = (id: number, newValue: string): void => {
+        if (newValue.length == 0) {
+            alert("O nome da despesa não pode ser vazio!");
+            return;
+        }
+
+        if (expenses.find((item) => item.displayValue == newValue)) {
+            alert("Já existe uma despesa com esse nome!");
+            return;
+        }
+
         api.put(`/api/expenses_types/${id}/`, {
             type: newValue,
         }).finally(() => {

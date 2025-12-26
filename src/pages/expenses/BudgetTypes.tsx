@@ -81,6 +81,16 @@ const BudgetTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
      * @param newValue Novo texto para o orçamento.
      */
     const onEdit = (id: number, newValue: string): void => {
+        if (newValue.length == 0) {
+            alert("O nome do orçamento não pode ser vazio!");
+            return;
+        }
+
+        if (budgets.find((item) => item.displayValue == newValue)) {
+            alert("Já existe um orçamento com esse nome!");
+            return;
+        }
+
         api.put(`/api/expenses_budgets/${id}/`, {
             budget: newValue,
         }).finally(() => {
