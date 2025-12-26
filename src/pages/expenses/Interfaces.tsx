@@ -121,3 +121,8 @@ export interface PaymentsBackendProps {
     is_active: boolean;
     fk_user_id: number;
 }
+
+export interface ExpensesManagementProps {
+    showModal: boolean;
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}

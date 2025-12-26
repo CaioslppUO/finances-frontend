@@ -37,6 +37,7 @@ import {
 import BudgetTypes from "./BudgetTypes";
 import PaymentTypes from "./PaymentTypes";
 import ExpensesTypes from "./ExpensesTypes";
+import ExpensesManagement from "./ExpensesManagement";
 
 // Services
 import { api } from "../../services/api";
@@ -152,9 +153,14 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
     // Dados da tabela
     const [tableData, setTableData] = useState<TableData[]>([]);
 
+    // Gerenciador de tipos de despesa, tipos de orçamento e métodos de pagamento.
     const [showExpensesTypes, setShowExpensesTypes] = useState<boolean>(false);
     const [showBudgetTypes, setShowBudgetTypes] = useState<boolean>(false);
     const [showPaymentTypes, setShowPaymentTypes] = useState<boolean>(false);
+
+    // Gerenciador de despesas
+    const [showExpensesManager, setShowExpensesManager] =
+        useState<boolean>(false);
 
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
@@ -271,10 +277,10 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
         renderToolbarInternalActions: ({ table }) => (
             <>
                 {/* Botão customizado */}
-                <Tooltip title="Adicionar novo item">
+                <Tooltip title="Adicionar nova despesa">
                     <IconButton
                         onClick={() => {
-                            console.log("Novo item clicado!");
+                            setShowExpensesManager(true);
                         }}
                     >
                         <Add />
@@ -352,6 +358,11 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                 showTypes={showPaymentTypes}
                 setShowTypes={setShowPaymentTypes}
                 title="Tipos de Pagamento"
+            />
+            {/* Modal de Gerenciamento de Despesas */}
+            <ExpensesManagement
+                showModal={showExpensesManager}
+                setShowModal={setShowExpensesManager}
             />
         </Grid>
     );
