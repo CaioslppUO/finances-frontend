@@ -66,6 +66,17 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
     };
 
     /**
+     * Deleta a despesa com o id informado.
+     * @param id Id da despesa que será deletada.
+     */
+    const onDelete = (id: number): void => {
+        api.delete(`/api/expenses_types/${id}/`).finally(() => {
+            // Recarrega a tela de despesas.
+            getExpenseTypeList();
+        });
+    };
+
+    /**
      * Busca os tipos de despesa cadastrados para esse usuário ao abrir o modal.
      */
     useEffect(() => {
@@ -81,6 +92,7 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             title={title}
             itens={expenses}
             onAdd={onAdd}
+            onDelete={onDelete}
         />
     );
 };

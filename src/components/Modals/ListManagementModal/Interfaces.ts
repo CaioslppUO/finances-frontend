@@ -7,6 +7,7 @@ export interface ListManagementModalProps {
     title: string;
     itens: ListItem[];
     onAdd: (value: string) => void;
+    onDelete: (id: number) => void;
 }
 
 export interface ListItem {

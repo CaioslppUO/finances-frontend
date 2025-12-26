@@ -40,6 +40,7 @@ const ListManagementModal = ({
     title,
     itens,
     onAdd,
+    onDelete,
 }: ListManagementModalProps) => {
     // Controle de edição/deleção de elementos
     const [idToEdit, setIdToEdit] = useState<number | undefined>(undefined);
@@ -76,9 +77,14 @@ const ListManagementModal = ({
      * @param id ID do elemento a ser deletado.
      */
     const onConfirmDelete = (id: number | undefined): void => {
+        if (id == undefined) return;
+
+        // Deleta o elemento
+        onDelete(id);
+
+        // Desmarca o elemento como "selecionado para deleção".
         setIdToDelete(undefined);
         if (id == undefined) return;
-        console.log("Deletado elemento de ID: ", id);
     };
 
     /**

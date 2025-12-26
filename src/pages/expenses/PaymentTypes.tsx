@@ -11,6 +11,8 @@ const PaymentTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             setShowModal={setShowTypes}
             title={title}
             itens={[]}
+            onAdd={() => {}}
+            onDelete={() => {}}
         />
     );
 };
