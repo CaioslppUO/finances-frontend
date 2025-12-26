@@ -21,6 +21,21 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+/**
+ * Quando o token vencer, manda o usuário para a página de login.
+ */
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        // Desloga o usuário e manda para a página de login
+        if (error.response?.status === 401) {
+            localStorage.clear();
+            window.location.href = "/login";
+        }
+        return Promise.reject(error);
+    }
+);
+
 // Renovação de token
 // let isRefreshing = false;
 // let failedQueue: any[] = [];
