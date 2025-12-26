@@ -13,6 +13,7 @@ const PaymentTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             itens={[]}
             onAdd={() => {}}
             onDelete={() => {}}
+            onEdit={() => {}}
         />
     );
 };

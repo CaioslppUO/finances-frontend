@@ -8,6 +8,7 @@ export interface ListManagementModalProps {
     itens: ListItem[];
     onAdd: (value: string) => void;
     onDelete: (id: number) => void;
+    onEdit: (id: number, newValue: string) => void;
 }
 
 export interface ListItem {

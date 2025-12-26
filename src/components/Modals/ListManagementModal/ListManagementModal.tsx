@@ -41,6 +41,7 @@ const ListManagementModal = ({
     itens,
     onAdd,
     onDelete,
+    onEdit,
 }: ListManagementModalProps) => {
     // Controle de edição/deleção de elementos
     const [idToEdit, setIdToEdit] = useState<number | undefined>(undefined);
@@ -93,9 +94,7 @@ const ListManagementModal = ({
      * @param newValue Novo valor do elemento a ser editado.
      */
     const onConfirmEdit = (id: number, newValue: string): void => {
-        console.log(
-            `Valor alterado de 'Line item ${id}' para '${newValue}' com sucesso!`
-        );
+        onEdit(id, newValue);
         setIdToEdit(undefined);
     };
 
@@ -260,14 +259,17 @@ const ListManagementModal = ({
                     onConfirm={onConfirmEdit}
                     onCancel={onCancelEdit}
                     elementID={idToEdit == undefined ? -1 : idToEdit}
-                    oldValue={`List item ${idToEdit}`}
+                    oldValue={
+                        itens.find((item) => item.id == idToEdit)
+                            ?.displayValue || ""
+                    }
                 />
                 {/* Modal de confirmação de exclusão */}
                 <ConfirmationModal
                     showModal={idToDelete != undefined}
                     onConfirm={onConfirmDelete}
                     onCancel={onCancelDelete}
-                    title="Cofirmar exclusão?"
+                    title={`Deseja realmente excluir '${itens.find((item) => item.id == idToDelete)?.displayValue}' ?`}
                     elementID={idToDelete}
                 />
             </Grid>

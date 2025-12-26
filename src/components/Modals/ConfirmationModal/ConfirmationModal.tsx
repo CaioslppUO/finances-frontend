@@ -46,7 +46,7 @@ const ConfirmationModal = ({
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: "24rem",
-                    height: "8rem",
+                    height: "12rem",
                     bgcolor: "#1d1c1c",
                     border: "1px solid #000",
                     boxShadow: 24,
@@ -69,7 +69,7 @@ const ConfirmationModal = ({
                 <Grid
                     container
                     size={12}
-                    pt={1}
+                    pt={3}
                     sx={{
                         justifyContent: "center",
                     }}

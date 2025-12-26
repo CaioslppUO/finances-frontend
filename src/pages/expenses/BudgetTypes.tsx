@@ -13,6 +13,7 @@ const BudgetTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             itens={[]}
             onAdd={() => {}}
             onDelete={() => {}}
+            onEdit={() => {}}
         />
     );
 };

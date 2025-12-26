@@ -77,6 +77,20 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
     };
 
     /**
+     * Edita o nome de uma despesa.
+     * @param id Id da despesa a ser editada.
+     * @param newValue Novo texto para a despesa.
+     */
+    const onEddit = (id: number, newValue: string): void => {
+        api.put(`/api/expenses_types/${id}/`, {
+            type: newValue,
+        }).finally(() => {
+            // Recarrega a tela de despesas.
+            getExpenseTypeList();
+        });
+    };
+
+    /**
      * Busca os tipos de despesa cadastrados para esse usuário ao abrir o modal.
      */
     useEffect(() => {
@@ -93,6 +107,7 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             itens={expenses}
             onAdd={onAdd}
             onDelete={onDelete}
+            onEdit={onEddit}
         />
     );
 };
