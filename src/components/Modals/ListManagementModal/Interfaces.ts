@@ -14,5 +14,4 @@ export interface ListManagementModalProps {
 export interface ListItem {
     id: number;
     displayValue: string;
-    isActive: boolean;
 }

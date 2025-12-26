@@ -107,3 +107,10 @@ export interface ExpenseTypeBackendProps {
     is_active: boolean;
     fk_user_id: number;
 }
+
+export interface BudgetsBackendProps {
+    expense_budget_id: number;
+    budget: string;
+    is_active: boolean;
+    fk_user_id: number;
+}

@@ -11,6 +11,12 @@ import type { ListItem } from "../../components/Modals/ListManagementModal/Inter
 // Services
 import { api } from "../../services/api";
 
+/**
+ * Exibe a lista de tipos de despesas.
+ * @param showTypes Estado que controla a exibição da lista.
+ * @param setShowTypes Setter do estado que controla a exibição da lista.
+ * @param title Título da lista.
+ */
 const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
     // Lista de despesas
     const [expenses, setExpenses] = useState<ListItem[]>([]);
@@ -27,16 +33,9 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
                 tmpList.push({
                     id: data.expense_type_id,
                     displayValue: data.type,
-                    isActive: data.is_active,
                 });
             });
 
-            // Ordena para exibir primeiro as despesas ativas.
-            tmpList.sort((a, b) => {
-                if (a.isActive && !b.isActive) return -1;
-                if (!a.isActive && b.isActive) return 1;
-                return 0;
-            });
             setExpenses(tmpList);
         });
     };
@@ -81,7 +80,7 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
      * @param id Id da despesa a ser editada.
      * @param newValue Novo texto para a despesa.
      */
-    const onEddit = (id: number, newValue: string): void => {
+    const onEdit = (id: number, newValue: string): void => {
         api.put(`/api/expenses_types/${id}/`, {
             type: newValue,
         }).finally(() => {
@@ -107,7 +106,7 @@ const ExpensesTypes = ({ showTypes, setShowTypes, title }: TypesProps) => {
             itens={expenses}
             onAdd={onAdd}
             onDelete={onDelete}
-            onEdit={onEddit}
+            onEdit={onEdit}
         />
     );
 };
