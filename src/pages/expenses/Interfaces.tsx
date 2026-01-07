@@ -7,7 +7,7 @@ import { type AppTheme } from "@toolpad/core/AppProvider";
 export interface TableData {
     date: string;
     description: string;
-    type: string;
+    expType: string;
     budget: string;
     payment: string;
     value: number;
@@ -15,10 +15,13 @@ export interface TableData {
 
 export interface ExpensesTableProps {
     date: Date;
+    onNewExpense: () => void;
 }
 
 export interface ExpensesGraphProps {
     setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+    expenses: number[];
+    setExpenses: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export interface TypesProps {
@@ -125,4 +128,6 @@ export interface PaymentsBackendProps {
 export interface ExpensesManagementProps {
     showModal: boolean;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    selectedDate: Date;
+    onClose: () => void;
 }

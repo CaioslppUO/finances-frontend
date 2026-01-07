@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useState, type HTMLAttributes } from "react";
+import React, { useEffect, useState } from "react";
 
 // Material UI
 import { DatePicker } from "@mui/x-date-pickers";
@@ -27,8 +27,8 @@ import {
 } from "./Interfaces";
 
 // Services
+import dayjs, { Dayjs } from "dayjs";
 import { api } from "../../services/api";
-import TextInput from "../../components/TextInput/TextInput";
 import { colors } from "../../theme/theme";
 
 interface CustomProps {
@@ -64,9 +64,13 @@ const NumericFormatCustom = React.forwardRef<
     );
 });
 
-function CurrencyInput() {
-    const [value, setValue] = React.useState("0");
-
+function CurrencyInput({
+    value,
+    setValue,
+}: {
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+}) {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
@@ -87,9 +91,26 @@ function CurrencyInput() {
     );
 }
 
+const DescriptionField = React.memo(
+    ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
+        return (
+            <TextField
+                inputProps={{ maxLength: 50 }}
+                fullWidth
+                label="Descrição"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                helperText={`${value.length}/50`}
+            />
+        );
+    }
+);
+
 const ExpensesManagement = ({
     showModal,
     setShowModal,
+    selectedDate,
+    onClose,
 }: ExpensesManagementProps) => {
     // Tipos Disponíveis
     const [types, setTypes] = useState<ExpenseTypeBackendProps[]>([]);
@@ -107,7 +128,64 @@ const ExpensesManagement = ({
         undefined
     );
 
+    // Valores
     const [description, setDescription] = useState<string>("");
+    const [date, setDate] = useState<Dayjs | null>(
+        dayjs(selectedDate.toString())
+    );
+    const [value, setValue] = React.useState("0");
+
+    /**
+     * Função chamada ao clicar no botão de confirmar do modal.
+     */
+    const onConfirm = (): void => {
+        if (description.length <= 0) {
+            alert("A descrição não pode ser vazia!");
+            return;
+        }
+
+        if (Number(value) == 0) {
+            alert("O valor não pode ser vazio!");
+            return;
+        }
+
+        if (type == undefined) {
+            alert("O tipo não pode ser vazio!");
+            return;
+        }
+
+        if (budget == undefined) {
+            alert("O orçamento não pode ser vazio!");
+            return;
+        }
+
+        if (payment == undefined) {
+            alert("O método de pagamento não pode ser vazio!");
+            return;
+        }
+
+        api.post("/api/expenses/", {
+            description: description,
+            value: value,
+            date: date?.format("YYYY-MM-DD"),
+            fk_type_id: type?.expense_type_id,
+            fk_budget_id: budget?.expense_budget_id,
+            fk_payment_id: payment?.expense_payment_id,
+        }).finally(() => {
+            onClose();
+        });
+
+        // Fecha e limpa o modal.
+        setShowModal(false);
+    };
+
+    /**
+     * Função chamada ao clicar no botão de cancelar do modal.
+     */
+    const onCancel = (): void => {
+        setShowModal(false);
+        onClose();
+    };
 
     /**
      * Preenche os tipos de despesa, orçamentos e métodos de pagamento, ao abrir o modal.
@@ -119,6 +197,9 @@ const ExpensesManagement = ({
         setType(undefined);
         setBudget(undefined);
         setPayment(undefined);
+        setDescription("");
+        setValue("0");
+        setDate(dayjs(selectedDate.toString()));
 
         // Tipos de despesas
         api.get("/api/expenses_types/").then((response) => {
@@ -191,21 +272,22 @@ const ExpensesManagement = ({
                                 <DatePicker
                                     format="DD/MM/YYYY"
                                     label="Data da Despesa"
+                                    defaultValue={date}
+                                    onChange={(newDate) => {
+                                        setDate(newDate);
+                                    }}
                                 />
                             </Grid>
                             <Grid size={6}>
-                                <CurrencyInput />
+                                <CurrencyInput
+                                    value={value}
+                                    setValue={setValue}
+                                />
                             </Grid>
                             <Grid size={12} mt={2.5}>
-                                <TextField
-                                    inputProps={{ maxLength: 50 }}
-                                    fullWidth
-                                    label="Descrição"
+                                <DescriptionField
                                     value={description}
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
-                                    }
-                                    helperText={`${description.length}/${50}`}
+                                    onChange={setDescription}
                                 />
                             </Grid>
                         </Grid>
@@ -231,11 +313,7 @@ const ExpensesManagement = ({
                             <Select
                                 labelId="select-expense-type-label"
                                 id="select-expense-type"
-                                value={
-                                    type == undefined
-                                        ? types[0]?.expense_type_id
-                                        : type.expense_type_id
-                                }
+                                value={type ? type.expense_type_id : ""}
                                 label="Tipo de Despesa"
                                 onChange={(value) => {
                                     setType(
@@ -264,11 +342,7 @@ const ExpensesManagement = ({
                             <Select
                                 labelId="select-expense-budget-label"
                                 id="select-expense-budget"
-                                value={
-                                    budget == undefined
-                                        ? budgets[0]?.expense_budget_id
-                                        : budget.expense_budget_id
-                                }
+                                value={budget ? budget.expense_budget_id : ""}
                                 label="Orçamento"
                                 onChange={(value) => {
                                     setBudget(
@@ -298,9 +372,7 @@ const ExpensesManagement = ({
                                 labelId="select-expense-payment-label"
                                 id="select-expense-payment"
                                 value={
-                                    payment == undefined
-                                        ? payments[0]?.expense_payment_id
-                                        : payment.expense_payment_id
+                                    payment ? payment.expense_payment_id : ""
                                 }
                                 label="Método de Pagamento"
                                 onChange={(value) => {
@@ -342,7 +414,7 @@ const ExpensesManagement = ({
                                 width: "6rem",
                                 textTransform: "none",
                             }}
-                            onClick={() => {}}
+                            onClick={onCancel}
                         >
                             Cancelar
                         </Button>
@@ -356,7 +428,7 @@ const ExpensesManagement = ({
                                 width: "6rem",
                                 textTransform: "none",
                             }}
-                            onClick={() => {}}
+                            onClick={onConfirm}
                         >
                             Confirmar
                         </Button>

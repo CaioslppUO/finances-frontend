@@ -18,12 +18,7 @@ import ExpensesTable from "./ExpensesTable";
 import ExpensesGraph from "./ExpensesGraph";
 
 // Interfaces
-import {
-    months,
-    type ExpensesBackendProps,
-    type ExpensesProps,
-    type TableData,
-} from "./Interfaces";
+import { type ExpensesProps } from "./Interfaces";
 
 // Contexto
 import { useAuth } from "../../context/AuthContext/AuthContext";
@@ -66,6 +61,26 @@ const Expenses = ({ theme }: ExpensesProps) => {
 
     // Data selecionada no seletor de datas.
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+    // Dados para o gráfico de barras
+    const [expenses, setExpenses] = useState<number[]>([
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]);
+
+    /**
+     * Atualiza a lista de despesas mensais (gráfico de barras).
+     */
+    const fetchExpenses = () => {
+        try {
+            api.get(
+                `api/expenses/year/?year=${selectedDate.getFullYear()}`
+            ).then((response) => {
+                setExpenses(response.data);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     /**
      * Sempre que o usuário for autenticado, preenche os dados de sessão.
@@ -146,7 +161,11 @@ const Expenses = ({ theme }: ExpensesProps) => {
                                 backgroundColor: colors.background,
                             }}
                         >
-                            <ExpensesGraph setSelectedDate={setSelectedDate} />
+                            <ExpensesGraph
+                                setSelectedDate={setSelectedDate}
+                                expenses={expenses}
+                                setExpenses={setExpenses}
+                            />
                         </Grid>
                         {/* Container da tabela de despesas mensais */}
                         <Grid
@@ -157,7 +176,10 @@ const Expenses = ({ theme }: ExpensesProps) => {
                                 flexDirection: "column",
                             }}
                         >
-                            <ExpensesTable date={selectedDate} />
+                            <ExpensesTable
+                                date={selectedDate}
+                                onNewExpense={fetchExpenses}
+                            />
                         </Grid>
                     </Grid>
                 </Grid>

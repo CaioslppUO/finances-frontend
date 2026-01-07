@@ -75,13 +75,24 @@ const getComplexColumn = (
     id: string,
     header: string,
     color: string,
+    columnId: "type" | "budget" | "payment",
     Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
         muiName: string;
     },
     onClick?: () => void
 ): MRT_ColumnDef<TableData> => {
     return {
-        accessorFn: (originalRow) => originalRow.type,
+        accessorFn: (originalRow) => {
+            if (columnId == "type") {
+                return originalRow.expType;
+            }
+            if (columnId == "budget") {
+                return originalRow.budget;
+            }
+            if (columnId == "payment") {
+                return originalRow.payment;
+            }
+        },
         id: id,
         header: header,
         Header: (
@@ -116,7 +127,7 @@ const getActionsColumn = (
     color: string
 ): MRT_ColumnDef<TableData> => {
     return {
-        accessorFn: (originalRow) => originalRow.type,
+        accessorFn: (originalRow) => originalRow.expType,
         id: id,
         header: header,
         Header: (
@@ -149,7 +160,7 @@ const getActionsColumn = (
  * Componente responsável por exibir a tabela de despesas mensais.
  * @param date Data sobre os quais são referentes os dados.
  */
-const ExpensesTable = ({ date }: ExpensesTableProps) => {
+const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
     // Dados da tabela
     const [tableData, setTableData] = useState<TableData[]>([]);
 
@@ -170,13 +181,15 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                 "type",
                 "Tipo",
                 colors.white.strong,
+                "type",
                 Settings,
                 () => setShowExpensesTypes(!showExpensesTypes)
             ),
             getComplexColumn(
-                "budger",
+                "budget",
                 "Orçamento",
                 colors.white.strong,
+                "budget",
                 Settings,
                 () => setShowBudgetTypes(!showBudgetTypes)
             ),
@@ -184,6 +197,7 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                 "payment",
                 "PGTO",
                 colors.white.strong,
+                "payment",
                 Settings,
                 () => setShowPaymentTypes(!showPaymentTypes)
             ),
@@ -294,9 +308,9 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
     });
 
     /**
-     * Busca os dados do mês selecionado sempre que o mês for alterado.
+     * Atualiza a lista de despesas.
      */
-    useEffect(() => {
+    const fetchExpenses = () => {
         try {
             const tmp: TableData[] = [];
             api.get(
@@ -313,7 +327,7 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
                         }),
                         description: row.description,
                         value: parseFloat(row.value),
-                        type:
+                        expType:
                             row.type_name != undefined
                                 ? row.type_name
                                 : "undefined",
@@ -332,6 +346,21 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    /**
+     * Função executada ao fechar o modal de adição de despesas.
+     */
+    const onCloseNewExpenseModal = () => {
+        fetchExpenses();
+        onNewExpense();
+    };
+
+    /**
+     * Busca os dados do mês selecionado sempre que o mês for alterado.
+     */
+    useEffect(() => {
+        fetchExpenses();
     }, [date]);
 
     return (
@@ -363,6 +392,8 @@ const ExpensesTable = ({ date }: ExpensesTableProps) => {
             <ExpensesManagement
                 showModal={showExpensesManager}
                 setShowModal={setShowExpensesManager}
+                selectedDate={date}
+                onClose={onCloseNewExpenseModal}
             />
         </Grid>
     );

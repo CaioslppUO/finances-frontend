@@ -22,14 +22,13 @@ import { api } from "../../services/api";
  * Componente responsável por exibir o gráfico das despesas mensais.
  * @param setSelectedDate Função para definir a data selecionada.
  */
-const ExpensesGraph = ({ setSelectedDate }: ExpensesGraphProps) => {
+const ExpensesGraph = ({
+    setSelectedDate,
+    expenses,
+    setExpenses,
+}: ExpensesGraphProps) => {
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
-
-    // Dados para o gráfico de barras
-    const [expenses, setExpenses] = useState<number[]>([
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ]);
 
     /**
      * Handler para a alteração de data do calendário.
