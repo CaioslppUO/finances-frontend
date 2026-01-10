@@ -29,8 +29,11 @@ api.interceptors.response.use(
     async (error) => {
         // Desloga o usuário e manda para a página de login
         if (error.response?.status === 401) {
-            localStorage.clear();
-            window.location.href = "/login";
+            // Redireciona o usuário para /login, caso ele já não esteja na página de login
+            if (window.location.pathname !== "/login") {
+                localStorage.clear();
+                window.location.href = "/login";
+            }
         }
         return Promise.reject(error);
     }
