@@ -21,6 +21,7 @@ import { NumericFormat, type NumericFormatProps } from "react-number-format";
 // Interfaces
 import {
     type BudgetsBackendProps,
+    type ExpensesBackendProps,
     type ExpensesManagementProps,
     type ExpenseTypeBackendProps,
     type NumericCustomProps,
@@ -123,8 +124,8 @@ const DescriptionField = React.memo(
 const ExpensesManagement = ({
     showModal,
     setShowModal,
-    selectedDate,
     onClose,
+    expenseIdToEdit,
 }: ExpensesManagementProps) => {
     // Tipos Disponíveis
     const [types, setTypes] = useState<ExpenseTypeBackendProps[]>([]);
@@ -144,9 +145,7 @@ const ExpensesManagement = ({
 
     // Valores
     const [description, setDescription] = useState<string>("");
-    const [date, setDate] = useState<Dayjs | null>(
-        dayjs(selectedDate.toString())
-    );
+    const [date, setDate] = useState<Dayjs | null>(null);
     const [value, setValue] = React.useState("0");
 
     /**
@@ -178,16 +177,31 @@ const ExpensesManagement = ({
             return;
         }
 
-        api.post("/api/expenses/", {
-            description: description,
-            value: value,
-            date: date?.format("YYYY-MM-DD"),
-            fk_type_id: type?.expense_type_id,
-            fk_budget_id: budget?.expense_budget_id,
-            fk_payment_id: payment?.expense_payment_id,
-        }).finally(() => {
-            onClose();
-        });
+        // Criação de uma nova despesa
+        if (expenseIdToEdit == undefined) {
+            api.post("/api/expenses/", {
+                description: description,
+                value: value,
+                date: date?.format("YYYY-MM-DD"),
+                fk_type_id: type?.expense_type_id,
+                fk_budget_id: budget?.expense_budget_id,
+                fk_payment_id: payment?.expense_payment_id,
+            }).finally(() => {
+                onClose();
+            });
+        } else {
+            // Edição de uma despesa
+            api.put(`/api/expenses/${expenseIdToEdit}/`, {
+                description: description,
+                value: value,
+                date: date?.format("YYYY-MM-DD"),
+                fk_type_id: type?.expense_type_id,
+                fk_budget_id: budget?.expense_budget_id,
+                fk_payment_id: payment?.expense_payment_id,
+            }).finally(() => {
+                onClose();
+            });
+        }
 
         // Fecha e limpa o modal.
         setShowModal(false);
@@ -202,18 +216,20 @@ const ExpensesManagement = ({
     };
 
     /**
+     * Busca e retorna uma despesa específica do backend.
+     * @param id Id da despesa que será pesquisada.
+     */
+    const fetchExpense = async (id: number): Promise<ExpensesBackendProps> => {
+        const response = await api.get(`/api/expenses/${id}/`);
+        return response.data;
+    };
+
+    /**
      * Preenche os tipos de despesa, orçamentos e métodos de pagamento, ao abrir o modal.
      */
     useEffect(() => {
+        // Preenche os tipos, orçamentos e métodos de pagamentos cadastrados para as despesas.
         if (showModal == false) return;
-
-        // 'Zera' os tipos selecionados anteriormente.
-        setType(undefined);
-        setBudget(undefined);
-        setPayment(undefined);
-        setDescription("");
-        setValue("0");
-        setDate(dayjs(selectedDate.toString()));
 
         // Tipos de despesas
         api.get("/api/expenses_types/").then((response) => {
@@ -229,7 +245,52 @@ const ExpensesManagement = ({
         api.get("/api/expenses_payments/").then((response) => {
             setPayments(response.data);
         });
+
+        // 'Zera' os tipos selecionados anteriormente.
+        if (expenseIdToEdit != undefined) return;
+        setType(undefined);
+        setBudget(undefined);
+        setPayment(undefined);
+        setDescription("");
+        setValue("0");
+        setDate(null);
     }, [showModal]);
+
+    /**
+     * Preenche os dados de uma despesa que será editada.
+     */
+    useEffect(() => {
+        if (expenseIdToEdit == undefined) return;
+
+        // 'Zera' os tipos selecionados anteriormente.
+        setType(undefined);
+        setBudget(undefined);
+        setPayment(undefined);
+        setDescription("");
+        setValue("0");
+        setDate(null);
+
+        fetchExpense(expenseIdToEdit).then((expense) => {
+            setDescription(expense.description);
+            setValue(expense.value);
+            setDate(dayjs(expense.date));
+            setType(
+                types.find((type) => type.expense_type_id == expense.fk_type_id)
+            );
+            setBudget(
+                budgets.find(
+                    (budget) => budget.expense_budget_id == expense.fk_budget_id
+                )
+            );
+            setPayment(
+                payments.find(
+                    (payment) =>
+                        payment.expense_payment_id == expense.fk_payment_id
+                )
+            );
+        });
+        // console.log("Chegou aqui: ", expenseIdToEdit);
+    }, [expenseIdToEdit]);
 
     return (
         <Modal
@@ -286,7 +347,7 @@ const ExpensesManagement = ({
                                 <DatePicker
                                     format="DD/MM/YYYY"
                                     label="Data da Despesa"
-                                    defaultValue={date}
+                                    value={date}
                                     onChange={(newDate) => {
                                         setDate(newDate);
                                     }}

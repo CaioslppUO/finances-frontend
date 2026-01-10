@@ -129,8 +129,8 @@ export interface PaymentsBackendProps {
 export interface ExpensesManagementProps {
     showModal: boolean;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-    selectedDate: Date;
     onClose: () => void;
+    expenseIdToEdit?: number;
 }
 
 export interface NumericCustomProps {

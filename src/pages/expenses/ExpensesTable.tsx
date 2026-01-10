@@ -116,19 +116,10 @@ const getComplexColumn = (
 };
 
 /**
- * Função chamada ao clicar no botão de editar despesa.
- */
-const onEditClick = (id: string) => {
-    console.log("Clicou em editar: ", id);
-};
-
-/**
  * Função chamada ao clicar no botão de deletar despesas.
  * @param id ID da despesa que será deletada.
  */
 const onDeleteExpenseClick = async (id: number): Promise<boolean> => {
-    console.log("Clicou em deletar: ", id);
-
     return new Promise((resolve) => {
         api.delete(`/api/expenses/${id}/`).then((response) => {
             if (response.status == 200) {
@@ -154,7 +145,11 @@ const getActionsColumn = (
     setShowDeleteConfirmation: React.Dispatch<React.SetStateAction<boolean>>,
     setExpenseToDelete: React.Dispatch<
         React.SetStateAction<TableData | undefined>
-    >
+    >,
+    setExpenseToEdit: React.Dispatch<
+        React.SetStateAction<TableData | undefined>
+    >,
+    setShowExpensesManager: React.Dispatch<React.SetStateAction<boolean>>
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorFn: (originalRow) => originalRow.expType,
@@ -174,8 +169,8 @@ const getActionsColumn = (
                 <Grid>
                     <IconButton
                         onClick={() => {
-                            // onEditClick(id);
-                            // console.log(row.original.id);
+                            setExpenseToEdit(row.original);
+                            setShowExpensesManager(true);
                         }}
                         size="small"
                     >
@@ -219,6 +214,9 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
     const [expenseToDelete, setExpenseToDelete] = useState<
         TableData | undefined
     >(undefined);
+    const [expenseToEdit, setExpenseToEdit] = useState<TableData | undefined>(
+        undefined
+    );
 
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
@@ -294,7 +292,9 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 "Ações",
                 colors.white.strong,
                 setShowDeleteConfirmation,
-                setExpenseToDelete
+                setExpenseToDelete,
+                setExpenseToEdit,
+                setShowExpensesManager
             ),
         ],
         [showExpensesTypes, showBudgetTypes, showPaymentTypes]
@@ -416,6 +416,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
     const onCloseNewExpenseModal = () => {
         fetchExpenses();
         onExpenseListChange();
+        setExpenseToEdit(undefined);
     };
 
     /**
@@ -454,8 +455,8 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
             <ExpensesManagement
                 showModal={showExpensesManager}
                 setShowModal={setShowExpensesManager}
-                selectedDate={date}
                 onClose={onCloseNewExpenseModal}
+                expenseIdToEdit={expenseToEdit ? expenseToEdit.id : undefined}
             />
             {/* Modal de confirmação de exclusão */}
             <ConfirmationModal
