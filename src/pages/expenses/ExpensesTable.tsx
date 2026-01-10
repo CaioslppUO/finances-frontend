@@ -323,14 +323,6 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 zIndex: 2,
             },
         },
-        // muiTableFooterRowProps={{
-        // sx: {
-        //     position: "sticky",
-        //     bottom: 0,
-        //     backgroundColor: colors.background.default,
-        //     zIndex: 2,
-        // },
-        // }},
         muiTableContainerProps: {
             sx: {
                 height: "100%",

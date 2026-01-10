@@ -41,6 +41,23 @@ const ExpensesGraph = ({
         setSelectedDate(data.toDate());
     };
 
+    /**
+     * Handler para o clique em um barra do gráfico.
+     * @param event Evento do mouse.
+     * @param params Parâmetros do gráfico.
+     */
+    const handleBarClick = (
+        event: React.MouseEvent,
+        params: { dataIndex: number }
+    ) => {
+        const monthIndex = params.dataIndex;
+
+        // Define a data como o mês clicado
+        const selected = dayjs().year(year).month(monthIndex).startOf("month");
+
+        handleDateChange(selected);
+    };
+
     const chartProps: BarChartProps = {
         xAxis: [
             {
@@ -61,6 +78,7 @@ const ExpensesGraph = ({
                 label: "Total",
                 data: expenses,
                 valueFormatter: formatCurrency,
+                barLabel: (value) => formatCurrency(value.value),
             },
         ],
         height: 350,
@@ -100,9 +118,7 @@ const ExpensesGraph = ({
                     <DatePicker
                         views={["month", "year"]}
                         onAccept={handleDateChange}
-                        defaultValue={dayjs()
-                            .set("month", month)
-                            .startOf("month")}
+                        value={dayjs().set("month", month).startOf("month")}
                     />
                 </Grid>
             </Grid>
@@ -110,6 +126,7 @@ const ExpensesGraph = ({
                 <BarChart
                     {...chartProps}
                     grid={{ horizontal: true }}
+                    onItemClick={handleBarClick}
                     sx={{ backgroundColor: "#1d1c1c" }}
                 />
             </Grid>

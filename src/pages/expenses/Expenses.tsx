@@ -68,9 +68,9 @@ const Expenses = ({ theme }: ExpensesProps) => {
     ]);
 
     /**
-     * Atualiza a lista de despesas mensais (gráfico de barras).
+     * Atualiza a lista de despesas mensais (gráfico de barras) quando houver atualização de despesa (deleção, inclusão, edição, etc).
      */
-    const fetchExpenses = () => {
+    const onExpenseListChange = () => {
         try {
             api.get(
                 `api/expenses/year/?year=${selectedDate.getFullYear()}`
@@ -178,7 +178,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                         >
                             <ExpensesTable
                                 date={selectedDate}
-                                onExpenseListChange={fetchExpenses}
+                                onExpenseListChange={onExpenseListChange}
                             />
                         </Grid>
                     </Grid>
