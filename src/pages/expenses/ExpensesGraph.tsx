@@ -24,21 +24,18 @@ import { api } from "../../services/api";
  */
 const ExpensesGraph = ({
     setSelectedDate,
+    selectedDate,
     expenses,
     setExpenses,
 }: ExpensesGraphProps) => {
-    const [month, setMonth] = useState(new Date().getMonth());
-    const [year, setYear] = useState(new Date().getFullYear());
-
     /**
      * Handler para a alteração de data do calendário.
      * @param data Nova data selecionada.
      */
     const handleDateChange = (data: PickerValue): void => {
         if (data === null) return;
-        setMonth(data.month());
-        setYear(data.year());
-        setSelectedDate(data.toDate());
+        const jsDate = data.toDate();
+        setSelectedDate(jsDate);
     };
 
     /**
@@ -53,7 +50,10 @@ const ExpensesGraph = ({
         const monthIndex = params.dataIndex;
 
         // Define a data como o mês clicado
-        const selected = dayjs().year(year).month(monthIndex).startOf("month");
+        const selected = dayjs()
+            .year(selectedDate.getFullYear())
+            .month(monthIndex)
+            .startOf("month");
 
         handleDateChange(selected);
     };
@@ -87,13 +87,15 @@ const ExpensesGraph = ({
     // Atualiza os dados sempre que o ano mudar.
     useEffect(() => {
         try {
-            api.get(`api/expenses/year/?year=${year}`).then((response) => {
+            api.get(
+                `api/expenses/year/?year=${selectedDate.getFullYear()}`
+            ).then((response) => {
                 setExpenses(response.data);
             });
         } catch (error) {
             console.log(error);
         }
-    }, [year]);
+    }, [selectedDate]);
 
     return (
         <Grid container sx={{ flex: 1 }}>
@@ -112,13 +114,16 @@ const ExpensesGraph = ({
                 pr={1}
             >
                 <Grid>
-                    <Typography variant="h5">Despesas - {year}</Typography>
+                    <Typography variant="h5">
+                        Despesas -{" "}
+                        {selectedDate ? selectedDate.getFullYear() : "AA"}
+                    </Typography>
                 </Grid>
                 <Grid>
                     <DatePicker
                         views={["month", "year"]}
-                        onAccept={handleDateChange}
-                        value={dayjs().set("month", month).startOf("month")}
+                        onChange={handleDateChange}
+                        value={dayjs(selectedDate)}
                     />
                 </Grid>
             </Grid>

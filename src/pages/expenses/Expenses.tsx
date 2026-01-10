@@ -163,6 +163,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                         >
                             <ExpensesGraph
                                 setSelectedDate={setSelectedDate}
+                                selectedDate={selectedDate}
                                 expenses={expenses}
                                 setExpenses={setExpenses}
                             />
