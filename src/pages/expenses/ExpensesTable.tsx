@@ -1,5 +1,5 @@
 // React
-import { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 
 // Table
 import {
@@ -41,6 +41,7 @@ import ExpensesManagement from "./ExpensesManagement";
 
 // Services
 import { api } from "../../services/api";
+import ConfirmationModal from "../../components/Modals/ConfirmationModal/ConfirmationModal";
 
 /**
  * Função responsável por criar uma coluna simples para a tabela.
@@ -115,6 +116,31 @@ const getComplexColumn = (
 };
 
 /**
+ * Função chamada ao clicar no botão de editar despesa.
+ */
+const onEditClick = (id: string) => {
+    console.log("Clicou em editar: ", id);
+};
+
+/**
+ * Função chamada ao clicar no botão de deletar despesas.
+ * @param id ID da despesa que será deletada.
+ */
+const onDeleteExpenseClick = async (id: number): Promise<boolean> => {
+    console.log("Clicou em deletar: ", id);
+
+    return new Promise((resolve) => {
+        api.delete(`/api/expenses/${id}/`).then((response) => {
+            if (response.status == 200) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+};
+
+/**
  * Coluna com botões de ação.
  * @param id ID único para a coluna.
  * @param header Nome que será utilizado para exibir a coluna.
@@ -124,7 +150,11 @@ const getComplexColumn = (
 const getActionsColumn = (
     id: string,
     header: string,
-    color: string
+    color: string,
+    setShowDeleteConfirmation: React.Dispatch<React.SetStateAction<boolean>>,
+    setExpenseToDelete: React.Dispatch<
+        React.SetStateAction<TableData | undefined>
+    >
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorFn: (originalRow) => originalRow.expType,
@@ -139,15 +169,27 @@ const getActionsColumn = (
                 </Grid>
             </i>
         ),
-        Cell: () => (
+        Cell: ({ row }) => (
             <Grid container spacing={1}>
                 <Grid>
-                    <IconButton size="small">
+                    <IconButton
+                        onClick={() => {
+                            // onEditClick(id);
+                            // console.log(row.original.id);
+                        }}
+                        size="small"
+                    >
                         <EditIcon />
                     </IconButton>
                 </Grid>
                 <Grid>
-                    <IconButton size="small">
+                    <IconButton
+                        onClick={() => {
+                            setExpenseToDelete(row.original);
+                            setShowDeleteConfirmation(true);
+                        }}
+                        size="small"
+                    >
                         <Delete />
                     </IconButton>
                 </Grid>
@@ -160,7 +202,7 @@ const getActionsColumn = (
  * Componente responsável por exibir a tabela de despesas mensais.
  * @param date Data sobre os quais são referentes os dados.
  */
-const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
+const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
     // Dados da tabela
     const [tableData, setTableData] = useState<TableData[]>([]);
 
@@ -172,6 +214,11 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
     // Gerenciador de despesas
     const [showExpensesManager, setShowExpensesManager] =
         useState<boolean>(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] =
+        useState<boolean>(false);
+    const [expenseToDelete, setExpenseToDelete] = useState<
+        TableData | undefined
+    >(undefined);
 
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
         () => [
@@ -242,7 +289,13 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
                     );
                 },
             },
-            getActionsColumn("actions", "Ações", colors.white.strong),
+            getActionsColumn(
+                "actions",
+                "Ações",
+                colors.white.strong,
+                setShowDeleteConfirmation,
+                setExpenseToDelete
+            ),
         ],
         [showExpensesTypes, showBudgetTypes, showPaymentTypes]
     );
@@ -262,6 +315,22 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
         enableTopToolbar: true,
         enableDensityToggle: false,
         enableTableFooter: true,
+        muiTableFooterRowProps: {
+            sx: {
+                position: "sticky",
+                bottom: 0,
+                backgroundColor: colors.background,
+                zIndex: 2,
+            },
+        },
+        // muiTableFooterRowProps={{
+        // sx: {
+        //     position: "sticky",
+        //     bottom: 0,
+        //     backgroundColor: colors.background.default,
+        //     zIndex: 2,
+        // },
+        // }},
         muiTableContainerProps: {
             sx: {
                 height: "100%",
@@ -318,6 +387,7 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
             ).then((res) => {
                 res.data.forEach((row: ExpensesBackendProps) => {
                     tmp.push({
+                        id: row.expense_id,
                         date: new Date(
                             `${row.date}T00:00:00`
                         ).toLocaleDateString("pt-BR", {
@@ -353,7 +423,7 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
      */
     const onCloseNewExpenseModal = () => {
         fetchExpenses();
-        onNewExpense();
+        onExpenseListChange();
     };
 
     /**
@@ -394,6 +464,30 @@ const ExpensesTable = ({ date, onNewExpense }: ExpensesTableProps) => {
                 setShowModal={setShowExpensesManager}
                 selectedDate={date}
                 onClose={onCloseNewExpenseModal}
+            />
+            {/* Modal de confirmação de exclusão */}
+            <ConfirmationModal
+                showModal={showDeleteConfirmation}
+                onConfirm={async () => {
+                    if (expenseToDelete == undefined) return;
+
+                    // Deleta a despesa
+                    await onDeleteExpenseClick(expenseToDelete.id);
+
+                    // Fecha o modal
+                    setExpenseToDelete(undefined);
+                    setShowDeleteConfirmation(false);
+
+                    // Recarrega a lista de despesas
+                    fetchExpenses();
+                    onExpenseListChange();
+                }}
+                onCancel={() => {
+                    setExpenseToDelete(undefined);
+                    setShowDeleteConfirmation(false);
+                }}
+                title={`Deseja realmente excluir '${expenseToDelete ? expenseToDelete.description : "??"}' ?`}
+                elementID={-1}
             />
         </Grid>
     );

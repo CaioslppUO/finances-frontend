@@ -5,6 +5,7 @@ import type React from "react";
 import { type AppTheme } from "@toolpad/core/AppProvider";
 
 export interface TableData {
+    id: number;
     date: string;
     description: string;
     expType: string;
@@ -15,7 +16,7 @@ export interface TableData {
 
 export interface ExpensesTableProps {
     date: Date;
-    onNewExpense: () => void;
+    onExpenseListChange: () => void;
 }
 
 export interface ExpensesGraphProps {
@@ -130,4 +131,9 @@ export interface ExpensesManagementProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     selectedDate: Date;
     onClose: () => void;
+}
+
+export interface NumericCustomProps {
+    onChange: (event: { target: { name: string; value: string } }) => void;
+    name: string;
 }

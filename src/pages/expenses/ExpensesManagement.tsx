@@ -23,22 +23,21 @@ import {
     type BudgetsBackendProps,
     type ExpensesManagementProps,
     type ExpenseTypeBackendProps,
+    type NumericCustomProps,
     type PaymentsBackendProps,
 } from "./Interfaces";
 
-// Services
+// Services e Utils
 import dayjs, { Dayjs } from "dayjs";
 import { api } from "../../services/api";
 import { colors } from "../../theme/theme";
 
-interface CustomProps {
-    onChange: (event: { target: { name: string; value: string } }) => void;
-    name: string;
-}
-
+/**
+ * Formata entradas numéricas de texto para Reais (R$).
+ */
 const NumericFormatCustom = React.forwardRef<
     HTMLInputElement,
-    CustomProps & NumericFormatProps
+    NumericCustomProps & NumericFormatProps
 >(function NumericFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -64,6 +63,11 @@ const NumericFormatCustom = React.forwardRef<
     );
 });
 
+/**
+ * Componente que renderiza um input em formato de moeda (R$).
+ * @param value Valor digitado no campo.
+ * @param setValue Setter do estado que armazena o valor digitado no campo.
+ */
 function CurrencyInput({
     value,
     setValue,
@@ -91,6 +95,9 @@ function CurrencyInput({
     );
 }
 
+/**
+ * Componente utilizado para exibir o campo "Descrição" da despesa.
+ */
 const DescriptionField = React.memo(
     ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
         return (
@@ -106,6 +113,13 @@ const DescriptionField = React.memo(
     }
 );
 
+/**
+ * Componente que exibe o gerenciador de despesas (criação e edição).
+ * @param showModal Indica se o modal deve ou não ser exibido.
+ * @param setShowModal Setter do estado que controla a exibição do modal.
+ * @param selectedDate Data selecionada no calendário.
+ * @param onClose Função chamada ao clicar no botão de cancelar ou confirmar.
+ */
 const ExpensesManagement = ({
     showModal,
     setShowModal,

@@ -178,7 +178,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                         >
                             <ExpensesTable
                                 date={selectedDate}
-                                onNewExpense={fetchExpenses}
+                                onExpenseListChange={fetchExpenses}
                             />
                         </Grid>
                     </Grid>
