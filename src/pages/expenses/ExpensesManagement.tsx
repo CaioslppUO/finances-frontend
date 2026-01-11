@@ -126,6 +126,7 @@ const ExpensesManagement = ({
     setShowModal,
     onClose,
     expenseIdToEdit,
+    selectedDate,
 }: ExpensesManagementProps) => {
     // Tipos Disponíveis
     const [types, setTypes] = useState<ExpenseTypeBackendProps[]>([]);
@@ -253,7 +254,7 @@ const ExpensesManagement = ({
         setPayment(undefined);
         setDescription("");
         setValue("0");
-        setDate(null);
+        setDate(dayjs(selectedDate));
     }, [showModal]);
 
     /**

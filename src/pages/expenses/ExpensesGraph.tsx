@@ -78,10 +78,13 @@ const ExpensesGraph = ({
                 label: "Total",
                 data: expenses,
                 valueFormatter: formatCurrency,
-                barLabel: (value) => formatCurrency(value.value),
+                barLabel: (value) => {
+                    if (value.value === 0) return "";
+                    return formatCurrency(value.value);
+                },
             },
         ],
-        height: 350,
+        height: 250,
     };
 
     // Atualiza os dados sempre que o ano mudar.
@@ -103,7 +106,7 @@ const ExpensesGraph = ({
                 size={12}
                 container
                 sx={{
-                    height: "13%",
+                    height: "14%",
                     backgroundColor: colors.blue.strong,
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
@@ -124,6 +127,11 @@ const ExpensesGraph = ({
                         views={["month", "year"]}
                         onChange={handleDateChange}
                         value={dayjs(selectedDate)}
+                        slotProps={{
+                            textField: {
+                                size: "small",
+                            },
+                        }}
                     />
                 </Grid>
             </Grid>

@@ -304,17 +304,18 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
         columns,
         data: tableData,
         enableRowSelection: false,
-        enableColumnOrdering: false,
-        enableGlobalFilter: false,
+        enableColumnOrdering: true,
+        enableGlobalFilter: true,
         enableCellActions: false,
         enableColumnActions: false,
-        enableColumnFilters: false,
+        enableColumnFilters: true,
         enablePagination: false,
-        enableSorting: false,
+        enableSorting: true,
         enableBottomToolbar: false,
         enableTopToolbar: true,
         enableDensityToggle: false,
         enableTableFooter: true,
+        enableStickyHeader: true,
         muiTableFooterRowProps: {
             sx: {
                 position: "sticky",
@@ -326,7 +327,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
         muiTableContainerProps: {
             sx: {
                 height: "100%",
-                minHeight: 330,
+                minHeight: 450,
                 maxHeight: 330,
                 overflowY: "auto",
             },
@@ -340,6 +341,8 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
         },
         initialState: {
             density: "compact",
+            showColumnFilters: true,
+            showGlobalFilter: true,
         },
         renderTopToolbarCustomActions: () => (
             <Typography
@@ -457,6 +460,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 setShowModal={setShowExpensesManager}
                 onClose={onCloseNewExpenseModal}
                 expenseIdToEdit={expenseToEdit ? expenseToEdit.id : undefined}
+                selectedDate={date}
             />
             {/* Modal de confirmação de exclusão */}
             <ConfirmationModal
