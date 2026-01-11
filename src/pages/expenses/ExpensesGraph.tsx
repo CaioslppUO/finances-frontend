@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Material UI
 import { Grid, Typography } from "@mui/material";
@@ -44,7 +44,7 @@ const ExpensesGraph = ({
      * @param params Parâmetros do gráfico.
      */
     const handleBarClick = (
-        event: React.MouseEvent,
+        _event: React.MouseEvent,
         params: { dataIndex: number }
     ) => {
         const monthIndex = params.dataIndex;

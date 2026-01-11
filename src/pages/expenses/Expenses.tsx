@@ -112,10 +112,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
             theme={theme}
             branding={{
                 logo: (
-                    <img
-                        src="../public/logo.png"
-                        alt="Gerenciador de Despesas Logo"
-                    />
+                    <img src="../logo.png" alt="Gerenciador de Despesas Logo" />
                 ),
                 title: "Gerenciador de Despesas",
                 homeUrl: "/despesas",
