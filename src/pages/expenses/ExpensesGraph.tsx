@@ -9,7 +9,6 @@ import type { PickerValue } from "@mui/x-date-pickers/internals";
 
 // Utils
 import dayjs from "dayjs";
-import { colors } from "../../theme/theme";
 import { formatCurrency } from "../../utils/Utils";
 
 // Interfaces
