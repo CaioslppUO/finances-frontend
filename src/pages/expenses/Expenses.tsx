@@ -73,7 +73,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
     const onExpenseListChange = () => {
         try {
             api.get(
-                `api/expenses/year/?year=${selectedDate.getFullYear()}`
+                `api/expenses/year/?year=${selectedDate.getFullYear()}`,
             ).then((response) => {
                 setExpenses(response.data);
             });
@@ -125,20 +125,16 @@ const Expenses = ({ theme }: ExpensesProps) => {
                 },
             ]}
         >
-            <DashboardLayout
-                defaultSidebarCollapsed
-                sx={{
-                    backgroundColor: "Background.default",
-                }}
-            >
+            <DashboardLayout defaultSidebarCollapsed>
                 {/* Container dos Dados do Dashboard */}
                 <Grid
                     container
                     sx={{
                         flex: 1,
                         border: 0,
-                        backgroundColor: colors.background,
+                        backgroundColor: "#111827",
                     }}
+                    pr={0.5}
                 >
                     {/* Container interno dos Dados */}
                     <Grid
@@ -155,7 +151,7 @@ const Expenses = ({ theme }: ExpensesProps) => {
                             container
                             size={12}
                             sx={{
-                                backgroundColor: colors.background,
+                                backgroundColor: "#111827",
                             }}
                         >
                             <ExpensesGraph

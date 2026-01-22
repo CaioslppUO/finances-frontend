@@ -12,7 +12,7 @@ export const colors = {
     green: {
         strong: "#009A29",
     },
-    white: { strong: "#E4E4E4" },
+    white: { strong: "#E5E7EB" },
     black: { strong: "#000000" },
     red: { strong: "#f44336" },
     orange: { strong: "#ff9800" },
@@ -21,8 +21,9 @@ export const colors = {
 
 const theme = createTheme({
     palette: {
+        mode: "dark",
         primary: {
-            main: colors.blue.strong,
+            main: "#E5E7EB",
         },
         secondary: {
             main: colors.green.strong,
@@ -40,36 +41,8 @@ const theme = createTheme({
             main: "#4caf50",
         },
         background: {
-            default: colors.background,
-            paper: "#ffffff",
-        },
-    },
-    colorSchemes: {
-        dark: {
-            palette: {
-                primary: {
-                    main: colors.blue.strong,
-                },
-                secondary: {
-                    main: colors.green.strong,
-                },
-                error: {
-                    main: "#f44336",
-                },
-                warning: {
-                    main: "#ff9800",
-                },
-                info: {
-                    main: "#2196f3",
-                },
-                success: {
-                    main: "#4caf50",
-                },
-                background: {
-                    default: colors.background,
-                    paper: "#141414ff",
-                },
-            },
+            default: "#212b38",
+            paper: "#141414ff",
         },
     },
 });

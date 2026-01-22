@@ -45,7 +45,7 @@ const ExpensesGraph = ({
      */
     const handleBarClick = (
         _event: React.MouseEvent,
-        params: { dataIndex: number }
+        params: { dataIndex: number },
     ) => {
         const monthIndex = params.dataIndex;
 
@@ -91,7 +91,7 @@ const ExpensesGraph = ({
     useEffect(() => {
         try {
             api.get(
-                `api/expenses/year/?year=${selectedDate.getFullYear()}`
+                `api/expenses/year/?year=${selectedDate.getFullYear()}`,
             ).then((response) => {
                 setExpenses(response.data);
             });
@@ -107,7 +107,7 @@ const ExpensesGraph = ({
                 container
                 sx={{
                     height: "14%",
-                    backgroundColor: colors.blue.strong,
+                    backgroundColor: "#243d5c",
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
                     justifyContent: "space-between",
