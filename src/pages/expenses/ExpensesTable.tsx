@@ -53,7 +53,7 @@ import ConfirmationModal from "../../components/Modals/ConfirmationModal/Confirm
 const getSimpleColumn = (
     key: string,
     header: string,
-    color: string
+    color: string,
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorKey: key,
@@ -80,7 +80,7 @@ const getComplexColumn = (
     Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
         muiName: string;
     },
-    onClick?: () => void
+    onClick?: () => void,
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorFn: (originalRow) => {
@@ -149,12 +149,13 @@ const getActionsColumn = (
     setExpenseToEdit: React.Dispatch<
         React.SetStateAction<TableData | undefined>
     >,
-    setShowExpensesManager: React.Dispatch<React.SetStateAction<boolean>>
+    setShowExpensesManager: React.Dispatch<React.SetStateAction<boolean>>,
 ): MRT_ColumnDef<TableData> => {
     return {
         accessorFn: (originalRow) => originalRow.expType,
         id: id,
         header: header,
+        enableColumnFilter: true,
         Header: (
             <i style={{ color: color }}>
                 <Grid container pt={0.2}>
@@ -215,7 +216,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
         TableData | undefined
     >(undefined);
     const [expenseToEdit, setExpenseToEdit] = useState<TableData | undefined>(
-        undefined
+        undefined,
     );
 
     const columns = useMemo<MRT_ColumnDef<TableData>[]>(
@@ -228,7 +229,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 colors.white.strong,
                 "type",
                 Settings,
-                () => setShowExpensesTypes(!showExpensesTypes)
+                () => setShowExpensesTypes(!showExpensesTypes),
             ),
             getComplexColumn(
                 "budget",
@@ -236,7 +237,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 colors.white.strong,
                 "budget",
                 Settings,
-                () => setShowBudgetTypes(!showBudgetTypes)
+                () => setShowBudgetTypes(!showBudgetTypes),
             ),
             getComplexColumn(
                 "payment",
@@ -244,7 +245,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 colors.white.strong,
                 "payment",
                 Settings,
-                () => setShowPaymentTypes(!showPaymentTypes)
+                () => setShowPaymentTypes(!showPaymentTypes),
             ),
             {
                 accessorFn: (originalRow) => originalRow.value,
@@ -294,10 +295,10 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
                 setShowDeleteConfirmation,
                 setExpenseToDelete,
                 setExpenseToEdit,
-                setShowExpensesManager
+                setShowExpensesManager,
             ),
         ],
-        [showExpensesTypes, showBudgetTypes, showPaymentTypes]
+        [showExpensesTypes, showBudgetTypes, showPaymentTypes],
     );
 
     const table = useMaterialReactTable({
@@ -320,7 +321,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
             sx: {
                 position: "sticky",
                 bottom: 0,
-                backgroundColor: colors.background,
+                backgroundColor: "#2f3338",
                 zIndex: 2,
             },
         },
@@ -336,7 +337,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
             sx: {
                 display: "flex",
                 flexDirection: "column",
-                borderRadius: 0,
+                borderRadius: 1.5,
             },
         },
         initialState: {
@@ -378,13 +379,13 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
         try {
             const tmp: TableData[] = [];
             api.get(
-                `/api/expenses/?month=${date.getMonth() + 1}&year=${date.getFullYear()}`
+                `/api/expenses/?month=${date.getMonth() + 1}&year=${date.getFullYear()}`,
             ).then((res) => {
                 res.data.forEach((row: ExpensesBackendProps) => {
                     tmp.push({
                         id: row.expense_id,
                         date: new Date(
-                            `${row.date}T00:00:00`
+                            `${row.date}T00:00:00`,
                         ).toLocaleDateString("pt-BR", {
                             day: "2-digit",
                             month: "2-digit",
@@ -435,6 +436,7 @@ const ExpensesTable = ({ date, onExpenseListChange }: ExpensesTableProps) => {
             sx={{
                 flexGrow: 1,
                 height: "100%",
+                backgroundColor: "#141414ff",
             }}
         >
             <MaterialReactTable table={table} />
